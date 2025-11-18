@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - Alkeyword</title>
+    <meta name="description" content="Complete documentation for Alkeyword - Observable Type Safety for Elixir">
+    
+    <!-- Marked.js for markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-elixir.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            padding: 1rem 0;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        /* Navigation Menu */
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+            position: relative;
+        }
+        
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s;
+        }
+        
+        .nav-menu a:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-menu a.active {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .nav-menu a.active::after {
+            width: 100%;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .tagline {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .free-badge {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .header-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .header-btn-primary {
+            background: white;
+            color: #667eea;
+            border: 2px solid white;
+        }
+        
+        .header-btn-primary:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+        }
+        
+        .header-btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .header-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            line-height: 1.2;
+        }
+        
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #666;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        /* Search Bar */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1.5rem;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+        
+        /* Documentation Container */
+        .docs-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            min-height: 600px;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .sidebar h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+        
+        .doc-list {
+            list-style: none;
+        }
+        
+        .doc-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        .doc-link {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: #555;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            border-left: 3px solid transparent;
+        }
+        
+        .doc-link:hover {
+            background: white;
+            color: #667eea;
+            transform: translateX(5px);
+            border-left-color: #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+        }
+        
+        .doc-link.active {
+            background: white;
+            color: #667eea;
+            font-weight: 600;
+            border-left-color: #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+        }
+        
+        .doc-category-header {
+            margin: 1.5rem 0 0.75rem 0;
+            padding: 0.5rem 1rem;
+            color: #667eea;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 6px;
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .doc-category-header strong {
+            color: inherit;
+        }
+        
+        .doc-spacer {
+            margin: 1rem 0;
+            padding: 0;
+        }
+        
+        .doc-spacer hr {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e9ecef, transparent);
+            margin: 0;
+        }
+        
+        /* Content Area */
+        .content {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            border: 1px solid #e9ecef;
+        }
+        
+        .content h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        .content h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        .content h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #2c3e50;
+        }
+        
+        .content p {
+            margin-bottom: 1rem;
+            color: #555;
+            line-height: 1.7;
+        }
+        
+        .content ul, .content ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        .content li {
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+        
+        .content code {
+            background: #f8f9fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #667eea;
+        }
+        
+        .content pre {
+            background: #2d2d2d;
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            border-left: 4px solid #667eea;
+        }
+        
+        .content pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+        
+        .content blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .content th, .content td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .content th {
+            font-weight: 600;
+            color: #2c3e50;
+            background: #f8f9fa;
+        }
+        
+        .content tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .content tr:hover {
+            background: rgba(102, 126, 234, 0.02);
+        }
+        
+        /* Prism.js syntax highlighting overrides */
+        .content pre[class*="language-"] {
+            background: #2d2d2d;
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow: auto;
+        }
+        
+        .content code[class*="language-"] {
+            background: none;
+            color: inherit;
+            padding: 0;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        /* Loading state */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            color: #666;
+        }
+        
+        /* Error state */
+        .error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: rgba(0,0,0,0.3);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        footer a {
+            color: #ffd700;
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo-section {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .free-badge {
+                order: -1;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .docs-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">⚗️ Alkeyword</div>
+                    <div class="tagline">Algebra Linked Keywords</div>
+                </div>
+                <div class="header-actions">
+                    <a href="index.html" class="header-btn header-btn-secondary">Home</a>
+                    <a href="documentation.html" class="header-btn header-btn-primary">Documentation</a>
+                    <a href="https://github.com/c-u-l8er/alkeyword.com" class="header-btn header-btn-secondary">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>
+                <span class="gradient-text">Documentation</span>
+            </h1>
+            <p>
+                Complete guides and references for Alkeyword - Observable Type Safety for Elixir
+            </p>
+            
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search documentation...">
+                <div class="search-icon">🔍</div>
+            </div>
+        </section>
+
+        <!-- Documentation Content -->
+        <div class="docs-container">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <h3>Documentation</h3>
+                <ul class="doc-list" id="docList">
+                    <!-- Documents will be loaded here -->
+                </ul>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="content" id="contentArea">
+                <div class="loading">Loading documentation...</div>
+            </main>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="currentYear"></span> Alkeyword Project | <a href="https://github.com/c-u-l8er/alkeyword.com">GitHub</a> | <a href="index.html">Home</a> | MIT License</p>
+            <p>Transform your Elixir with observable, type-safe alchemy ⚗️</p>
+        </div>
+    </footer>
+
+    <div style="background: #000; padding: 2em 0 1em;">
+        <div style="margin: 0 auto; width: 728px;">
+            <iframe
+                src="https://ampersandboxdesign.com/advertisements/leaderboard-watermark.html"
+                width="728"
+                height="90"
+                frameborder="0"
+                scrolling="no"
+                style="border:none; overflow:hidden;"
+                title="AmperSandboxDesign Branding Design Agency Advertisement"
+            >
+            </iframe>
+            <div style="text-align: right; color: #ccc; font-size: 0.75em;">
+                ^ADVERTISEMENT
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Documentation data
+        let docs = [];
+        let currentDoc = null;
+        let allDocsContent = {};
+        
+        // Initialize documentation
+        async function initDocs() {
+            try {
+                console.log('Initializing documentation...');
+                
+                // Initialize marked.js
+                if (!initializeMarked()) {
+                    console.warn('Marked.js initialization failed, continuing with basic functionality');
+                }
+                
+                // Discover documents dynamically
+                await discoverDocs();
+                await loadAllDocs();
+                console.log('Documents loaded:', Object.keys(allDocsContent));
+                renderDocList();
+                
+                // Load first document by default or check URL hash
+                const hash = window.location.hash.substring(1);
+                if (hash && docs.includes(hash)) {
+                    loadDocument(hash);
+                } else if (docs.length > 0) {
+                    loadDocument(docs[0]);
+                }
+            } catch (error) {
+                console.error('Error initializing documentation:', error);
+                showError(`Failed to initialize documentation: ${error.message}`);
+            }
+        }
+        
+        // Discover markdown files in the docs folder
+        async function discoverDocs() {
+            try {
+                console.log('Discovering documents in docs folder...');
+                
+                // All available documentation files based on DOCUMENTATION_INDEX.md
+                const allDocFiles = [
+                    // Core Documentation (Phase 1)
+                    'ALKEYWORD_PHASE1_DOCS.md',
+                    'DOC_01_GETTING_STARTED.md',
+                    'DOC_02_CORE_CONCEPTS.md',
+                    'DOC_03_PATTERN_MATCHING.md',
+                    'DOC_04_RECURSION_PATTERNS.md',
+                    'DOC_05_ASH_INTEGRATION.md',
+                    'DOC_06_PHOENIX_LIVEVIEW.md',
+                    'DOC_07_TYPE_INFERENCE.md',
+                    
+                    // Advanced Topics (Documents 8-11)
+                    'DOC_08_PERFORMANCE.md',
+                    'DOC_09_GRAPHQL.md',
+                    'DOC_10_MULTITENANT.md',
+                    'DOC_11_OBSERVABLE.md',
+                    
+                    // Operations (Documents 12-15)
+                    'DOC_12_DEPLOYMENT.md',
+                    'DOC_13_MONITORING.md',
+                    'DOC_14_TROUBLESHOOTING.md',
+                    'DOC_15_MIGRATION.md',
+                    
+                    // Business & Strategy (Documents 16-18)
+                    'DOC_16_ADR.md',
+                    'DOC_17_SUSTAINABILITY.md',
+                    'DOC_18_VALIDATION.md',
+                    
+                    // Additional Resources
+                    'ALKEYWORD_LLM_PROMPT_GUIDE.md',
+                    'DOCUMENTATION_INDEX.md',
+                    'COMPLETE_FILE_LIST.md',
+                    'README.md'
+                ];
+                
+                // Test each document to see if it exists
+                const existingDocs = [];
+                for (const doc of allDocFiles) {
+                    try {
+                        const response = await fetch(`docs/${doc}`, { method: 'HEAD' });
+                        if (response.ok) {
+                            existingDocs.push(doc);
+                            console.log(`Found document: ${doc}`);
+                        }
+                    } catch (error) {
+                        console.log(`Document not found: ${doc}`);
+                    }
+                }
+                
+                // Sort documents alphabetically
+                docs = existingDocs.sort();
+                console.log('Discovered documents:', docs);
+                
+                if (docs.length === 0) {
+                    throw new Error('No documents found in the docs folder');
+                }
+            } catch (error) {
+                console.error('Error discovering documents:', error);
+                // Final fallback to a basic list if all else fails
+                docs = [
+                    // Core Documentation (Phase 1)
+                    'ALKEYWORD_PHASE1_DOCS.md',
+                    'DOC_01_GETTING_STARTED.md',
+                    'DOC_02_CORE_CONCEPTS.md',
+                    'DOC_03_PATTERN_MATCHING.md',
+                    'DOC_04_RECURSION_PATTERNS.md',
+                    'DOC_05_ASH_INTEGRATION.md',
+                    'DOC_06_PHOENIX_LIVEVIEW.md',
+                    'DOC_07_TYPE_INFERENCE.md',
+                    
+                    // Advanced Topics (Documents 8-11)
+                    'DOC_08_PERFORMANCE.md',
+                    'DOC_09_GRAPHQL.md',
+                    'DOC_10_MULTITENANT.md',
+                    'DOC_11_OBSERVABLE.md',
+                    
+                    // Operations (Documents 12-15)
+                    'DOC_12_DEPLOYMENT.md',
+                    'DOC_13_MONITORING.md',
+                    'DOC_14_TROUBLESHOOTING.md',
+                    'DOC_15_MIGRATION.md',
+                    
+                    // Business & Strategy (Documents 16-18)
+                    'DOC_16_ADR.md',
+                    'DOC_17_SUSTAINABILITY.md',
+                    'DOC_18_VALIDATION.md',
+                    
+                    // Additional Resources
+                    'ALKEYWORD_LLM_PROMPT_GUIDE.md',
+                    'DOCUMENTATION_INDEX.md',
+                    'COMPLETE_FILE_LIST.md',
+                    'README.md'
+                ];
+                console.log('Using fallback document list:', docs);
+            }
+        }
+        
+        // Load all documents
+        async function loadAllDocs() {
+            console.log(`Starting to load ${docs.length} documents...`);
+            let loadedCount = 0;
+            let failedCount = 0;
+            
+            for (const doc of docs) {
+                try {
+                    console.log(`Loading document: ${doc}`);
+                    const response = await fetch(`docs/${doc}`);
+                    if (response.ok) {
+                        const content = await response.text();
+                        allDocsContent[doc] = content;
+                        loadedCount++;
+                        console.log(`Successfully loaded ${doc} (${content.length} characters)`);
+                    } else {
+                        failedCount++;
+                        console.error(`Failed to load ${doc}: ${response.status} ${response.statusText}`);
+                    }
+                } catch (error) {
+                    failedCount++;
+                    console.error(`Error loading ${doc}:`, error);
+                }
+            }
+            
+            console.log(`Document loading complete. Success: ${loadedCount}, Failed: ${failedCount}`);
+            
+            if (loadedCount === 0) {
+                throw new Error('No documents could be loaded');
+            }
+        }
+        
+        // Render document list in sidebar with categorization
+        function renderDocList() {
+            const docList = document.getElementById('docList');
+            docList.innerHTML = '';
+            
+            // Document categories based on DOCUMENTATION_INDEX.md
+            const categories = {
+                'Core Documentation (Phase 1)': [
+                    'ALKEYWORD_PHASE1_DOCS.md',
+                    'DOC_01_GETTING_STARTED.md',
+                    'DOC_02_CORE_CONCEPTS.md',
+                    'DOC_03_PATTERN_MATCHING.md',
+                    'DOC_04_RECURSION_PATTERNS.md',
+                    'DOC_05_ASH_INTEGRATION.md',
+                    'DOC_06_PHOENIX_LIVEVIEW.md',
+                    'DOC_07_TYPE_INFERENCE.md'
+                ],
+                'Advanced Topics (Documents 8-11)': [
+                    'DOC_08_PERFORMANCE.md',
+                    'DOC_09_GRAPHQL.md',
+                    'DOC_10_MULTITENANT.md',
+                    'DOC_11_OBSERVABLE.md'
+                ],
+                'Operations (Documents 12-15)': [
+                    'DOC_12_DEPLOYMENT.md',
+                    'DOC_13_MONITORING.md',
+                    'DOC_14_TROUBLESHOOTING.md',
+                    'DOC_15_MIGRATION.md'
+                ],
+                'Business & Strategy (Documents 16-18)': [
+                    'DOC_16_ADR.md',
+                    'DOC_17_SUSTAINABILITY.md',
+                    'DOC_18_VALIDATION.md'
+                ],
+                'Additional Resources': [
+                    'ALKEYWORD_LLM_PROMPT_GUIDE.md',
+                    'DOCUMENTATION_INDEX.md',
+                    'COMPLETE_FILE_LIST.md',
+                    'README.md'
+                ]
+            };
+            
+            // Render each category
+            Object.entries(categories).forEach(([categoryName, categoryDocs]) => {
+                // Add category header
+                const categoryHeader = document.createElement('li');
+                categoryHeader.className = 'doc-category-header';
+                categoryHeader.innerHTML = `<strong>${categoryName}</strong>`;
+                docList.appendChild(categoryHeader);
+                
+                // Add documents in this category
+                categoryDocs.forEach(doc => {
+                    if (docs.includes(doc)) {
+                        const li = document.createElement('li');
+                        li.className = 'doc-item';
+                        
+                        const a = document.createElement('a');
+                        a.href = `#${doc}`;
+                        a.className = 'doc-link';
+                        a.textContent = formatDocTitle(doc);
+                        a.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            loadDocument(doc);
+                            window.location.hash = doc;
+                        });
+                        
+                        li.appendChild(a);
+                        docList.appendChild(li);
+                    }
+                });
+                
+                // Add spacing between categories
+                const spacer = document.createElement('li');
+                spacer.className = 'doc-spacer';
+                spacer.innerHTML = '<hr>';
+                docList.appendChild(spacer);
+            });
+        }
+        
+        // Format document title with better descriptions
+        function formatDocTitle(filename) {
+            const titles = {
+                // Core Documentation
+                'ALKEYWORD_PHASE1_DOCS.md': '🚀 Phase 1: Complete Core Documentation',
+                'DOC_01_GETTING_STARTED.md': '1️⃣ Getting Started (15 Minutes)',
+                'DOC_02_CORE_CONCEPTS.md': '2️⃣ Core Concepts: Alchemical Metaphor',
+                'DOC_03_PATTERN_MATCHING.md': '3️⃣ Pattern Matching: Exhaustive Coverage',
+                'DOC_04_RECURSION_PATTERNS.md': '4️⃣ Recursion Patterns: Catalyst vs Vial',
+                'DOC_05_ASH_INTEGRATION.md': '5️⃣ Ash Framework Integration',
+                'DOC_06_PHOENIX_LIVEVIEW.md': '6️⃣ Phoenix LiveView Integration',
+                'DOC_07_TYPE_INFERENCE.md': '7️⃣ Type Inference Engine',
+                
+                // Advanced Topics
+                'DOC_08_PERFORMANCE.md': '8️⃣ Performance Profiling & Benchmarks',
+                'DOC_09_GRAPHQL.md': '9️⃣ GraphQL Integration',
+                'DOC_10_MULTITENANT.md': '🔟 Multi-tenant Patterns',
+                'DOC_11_OBSERVABLE.md': '1️⃣1️⃣ Observable Type System',
+                
+                // Operations
+                'DOC_12_DEPLOYMENT.md': '1️⃣2️⃣ Deployment Guide',
+                'DOC_13_MONITORING.md': '1️⃣3️⃣ Monitoring & Observability',
+                'DOC_14_TROUBLESHOOTING.md': '1️⃣4️⃣ Troubleshooting Guide',
+                'DOC_15_MIGRATION.md': '1️⃣5️⃣ Migration from Plain Elixir',
+                
+                // Business & Strategy
+                'DOC_16_ADR.md': '1️⃣6️⃣ Architecture Decision Records',
+                'DOC_17_SUSTAINABILITY.md': '1️⃣7️⃣ Open Source Sustainability',
+                'DOC_18_VALIDATION.md': '1️⃣8️⃣ Production Readiness Validation',
+                
+                // Additional Resources
+                'ALKEYWORD_LLM_PROMPT_GUIDE.md': '🤖 LLM Prompt Guide',
+                'DOCUMENTATION_INDEX.md': '📚 Documentation Index',
+                'COMPLETE_FILE_LIST.md': '📋 Complete File List',
+                'README.md': '📖 Documentation Package README'
+            };
+            
+            return titles[filename] || filename
+                .replace('.md', '')
+                .replace(/_/g, ' ')
+                .replace(/\b\w/g, l => l.toUpperCase());
+        }
+        
+        // Load and display document
+        async function loadDocument(docName) {
+            try {
+                console.log(`Loading document: ${docName}`);
+                
+                if (!allDocsContent[docName]) {
+                    showError(`Document ${docName} not found or could not be loaded.`);
+                    return;
+                }
+                
+                currentDoc = docName;
+                
+                // Update active state in sidebar
+                document.querySelectorAll('.doc-link').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${docName}`) {
+                        link.classList.add('active');
+                    }
+                });
+                
+                // Check if marked is available
+                if (typeof marked === 'undefined') {
+                    showError('Markdown parser (marked.js) not loaded.');
+                    return;
+                }
+                
+                // Convert markdown to HTML and display
+                const content = markdownToHtml(allDocsContent[docName]);
+                document.getElementById('contentArea').innerHTML = content;
+                
+                // Re-run Prism.js highlighting for the newly added content
+                if (typeof Prism !== 'undefined') {
+                    Prism.highlightAll();
+                } else {
+                    console.warn('Prism.js not loaded, syntax highlighting disabled.');
+                }
+            } catch (error) {
+                console.error(`Error loading document ${docName}:`, error);
+                showError(`Failed to load document: ${error.message}`);
+            }
+        }
+        
+        // Initialize marked.js when available
+        function initializeMarked() {
+            if (typeof marked === 'undefined') {
+                console.error('Marked.js not loaded');
+                return false;
+            }
+            
+            try {
+                // Configure marked options
+                marked.setOptions({
+                    highlight: function(code, lang) {
+                        const codeStr = typeof code === 'string' ? code : String(code || '');
+                        const language = lang || 'plaintext';
+                        
+                        if (Prism.languages[language]) {
+                            try {
+                                const highlighted = Prism.highlight(codeStr, Prism.languages[language], language);
+                                return typeof highlighted === 'string' ? highlighted : String(highlighted || codeStr);
+                            } catch (error) {
+                                console.error('Error highlighting code:', error);
+                                return escapeHtml(codeStr);
+                            }
+                        }
+                        return escapeHtml(codeStr);
+                    },
+                    langPrefix: 'language-',
+                    breaks: true,
+                    gfm: true
+                });
+                
+                console.log('Marked.js initialized successfully');
+                return true;
+            } catch (error) {
+                console.error('Error initializing marked.js:', error);
+                return false;
+            }
+        }
+        
+        // Convert markdown to HTML using Marked.js
+        function markdownToHtml(markdown) {
+            try {
+                if (typeof marked === 'undefined') {
+                    console.error('Marked.js not available, falling back to basic conversion');
+                    return `<pre>${escapeHtml(String(markdown || ''))}</pre>`;
+                }
+                
+                const markdownStr = typeof markdown === 'string' ? markdown : String(markdown || '');
+                return marked.parse(markdownStr);
+            } catch (error) {
+                console.error('Error parsing markdown:', error);
+                const markdownStr = typeof markdown === 'string' ? markdown : String(markdown || '');
+                return `<div class="error">Error parsing markdown: ${error.message}</div><pre>${escapeHtml(markdownStr)}</pre>`;
+            }
+        }
+        
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Show error message
+        function showError(message) {
+            document.getElementById('contentArea').innerHTML = `
+                <div class="error">
+                    <strong>Error:</strong> ${message}
+                </div>
+            `;
+        }
+        
+        // Search functionality with categorization
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            if (!searchTerm) {
+                renderDocList();
+                return;
+            }
+            
+            const docList = document.getElementById('docList');
+            docList.innerHTML = '';
+            
+            // Document categories (same as in renderDocList)
+            const categories = {
+                'Core Documentation (Phase 1)': [
+                    'ALKEYWORD_PHASE1_DOCS.md',
+                    'DOC_01_GETTING_STARTED.md',
+                    'DOC_02_CORE_CONCEPTS.md',
+                    'DOC_03_PATTERN_MATCHING.md',
+                    'DOC_04_RECURSION_PATTERNS.md',
+                    'DOC_05_ASH_INTEGRATION.md',
+                    'DOC_06_PHOENIX_LIVEVIEW.md',
+                    'DOC_07_TYPE_INFERENCE.md'
+                ],
+                'Advanced Topics (Documents 8-11)': [
+                    'DOC_08_PERFORMANCE.md',
+                    'DOC_09_GRAPHQL.md',
+                    'DOC_10_MULTITENANT.md',
+                    'DOC_11_OBSERVABLE.md'
+                ],
+                'Operations (Documents 12-15)': [
+                    'DOC_12_DEPLOYMENT.md',
+                    'DOC_13_MONITORING.md',
+                    'DOC_14_TROUBLESHOOTING.md',
+                    'DOC_15_MIGRATION.md'
+                ],
+                'Business & Strategy (Documents 16-18)': [
+                    'DOC_16_ADR.md',
+                    'DOC_17_SUSTAINABILITY.md',
+                    'DOC_18_VALIDATION.md'
+                ],
+                'Additional Resources': [
+                    'ALKEYWORD_LLM_PROMPT_GUIDE.md',
+                    'DOCUMENTATION_INDEX.md',
+                    'COMPLETE_FILE_LIST.md',
+                    'README.md'
+                ]
+            };
+            
+            let foundAny = false;
+            
+            // Search through each category
+            Object.entries(categories).forEach(([categoryName, categoryDocs]) => {
+                const matchingDocs = categoryDocs.filter(doc => {
+                    if (!docs.includes(doc)) return false;
+                    
+                    const title = formatDocTitle(doc).toLowerCase();
+                    const content = allDocsContent[doc] ? allDocsContent[doc].toLowerCase() : '';
+                    
+                    return title.includes(searchTerm) || content.includes(searchTerm);
+                });
+                
+                // Only show category if it has matching documents
+                if (matchingDocs.length > 0) {
+                    foundAny = true;
+                    
+                    // Add category header
+                    const categoryHeader = document.createElement('li');
+                    categoryHeader.className = 'doc-category-header';
+                    categoryHeader.innerHTML = `<strong>${categoryName}</strong>`;
+                    docList.appendChild(categoryHeader);
+                    
+                    // Add matching documents
+                    matchingDocs.forEach(doc => {
+                        const li = document.createElement('li');
+                        li.className = 'doc-item';
+                        
+                        const a = document.createElement('a');
+                        a.href = `#${doc}`;
+                        a.className = 'doc-link';
+                        a.textContent = formatDocTitle(doc);
+                        a.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            loadDocument(doc);
+                            window.location.hash = doc;
+                        });
+                        
+                        li.appendChild(a);
+                        docList.appendChild(li);
+                    });
+                    
+                    // Add spacing between categories
+                    const spacer = document.createElement('li');
+                    spacer.className = 'doc-spacer';
+                    spacer.innerHTML = '<hr>';
+                    docList.appendChild(spacer);
+                }
+            });
+            
+            if (!foundAny) {
+                docList.innerHTML = '<li class="doc-item"><div class="doc-link">No documents found matching your search</div></li>';
+            }
+        });
+        
+        // Handle hash change
+        window.addEventListener('hashchange', function() {
+            const hash = window.location.hash.substring(1);
+            if (hash && docs.includes(hash)) {
+                loadDocument(hash);
+            }
+        });
+        
+        // Initialize on DOM content loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
+            
+            // Check if external libraries are loaded
+            console.log('Marked.js available:', typeof marked !== 'undefined');
+            console.log('Prism.js available:', typeof Prism !== 'undefined');
+            
+            // Wait a bit for external libraries to load
+            setTimeout(() => {
+                console.log('Initializing documentation after timeout...');
+                console.log('Marked.js available after timeout:', typeof marked !== 'undefined');
+                console.log('Prism.js available after timeout:', typeof Prism !== 'undefined');
+                initDocs();
+            }, 500);
+        });
+        
+        // Also initialize on window load as a fallback
+        window.addEventListener('load', function() {
+            console.log('Window loaded');
+            if (Object.keys(allDocsContent).length === 0) {
+                console.log('Fallback initialization');
+                initDocs();
+            }
+        });
+        
+        // Set dynamic copyright year
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

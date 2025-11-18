@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alkeyword - Observable Type Safety for Elixir</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            padding: 1rem 0;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        /* Navigation Menu */
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+            position: relative;
+        }
+        
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s;
+        }
+        
+        .nav-menu a:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .tagline {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .free-badge {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .header-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .header-btn-primary {
+            background: white;
+            color: #667eea;
+            border: 2px solid white;
+        }
+        
+        .header-btn-primary:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+        }
+        
+        .header-btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .header-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+        
+        /* Observatory Metrics */
+        .observatory {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .observatory-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .observatory-header h2 {
+            font-size: 1.8rem;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .observatory-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .metric-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        }
+        
+        .metric-label {
+            font-size: 0.85rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 0.25rem;
+        }
+        
+        .metric-trend {
+            font-size: 0.9rem;
+            color: #10b981;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .metric-trend.down {
+            color: #ef4444;
+        }
+        
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: white;
+            border-radius: 12px;
+            padding: 4rem 3rem;
+            margin: 3rem 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+            line-height: 1.2;
+        }
+        
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            color: #666;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        .hero-features {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 2rem 0 2.5rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .hero-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #555;
+            font-size: 1rem;
+        }
+        
+        .hero-feature-item .checkmark {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        /* Integration Stack */
+        .integration-stack {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .integration-stack h2 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+        
+        .stack-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .stack-item {
+            padding: 1.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .stack-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .stack-item h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .stack-item p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        /* Code Examples */
+        .code-section {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .code-section h2 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+        
+        .code-section h3 {
+            color: #2c3e50;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+        
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+        }
+        
+        /* Features Grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .feature-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* CTA Buttons */
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 1.2rem 2.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .btn-secondary:hover {
+            background: #f8f9ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        }
+        
+        /* Documentation Section */
+        .documentation {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .documentation h2 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            text-align: center;
+        }
+        
+        .documentation .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .doc-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .doc-category {
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .doc-category:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+        
+        .doc-category h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .doc-list {
+            list-style: none;
+        }
+        
+        .doc-list li {
+            padding: 0.5rem 0;
+            color: #555;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        
+        .doc-list li::before {
+            content: "→";
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        /* Footer */
+        footer {
+            background: rgba(0,0,0,0.3);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        footer a {
+            color: #ffd700;
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Syntax Highlight Colors */
+        .keyword { color: #ff79c6; }
+        .function { color: #50fa7b; }
+        .string { color: #f1fa8c; }
+        .type { color: #8be9fd; }
+        .comment { color: #6272a4; font-style: italic; }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo-section {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .free-badge {
+                order: -1;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .hero-features {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">⚗️ Alkeyword</div>
+                    <div class="tagline">Alchemy Also Algebra</div>
+                </div>
+                <div class="header-actions">
+                    <a href="index.html" class="header-btn header-btn-primary">Home</a>
+                    <a href="documentation.html" class="header-btn header-btn-secondary">Documentation</a>
+                    <a href="https://github.com/c-u-l8er/alkeyword.com" class="header-btn header-btn-secondary">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <a href="https://traaviis.com" target="_blank">
+                <div class="hero-badge">Powered by TRAAVIIS</div>
+            </a>
+            <h1>
+                Transform Your Elixir Code with<br/>
+                <span class="gradient-text">Observable Type Safety</span>
+            </h1>
+            <p>
+                Build bulletproof Elixir applications with elegant, type-safe algebraic data types. 
+                Alkeyword brings the power of sum and product types to your codebase with an 
+                intuitive alchemical DSL—fully integrated with Ash Framework, Phoenix LiveView, 
+                and real-time observability.
+            </p>
+            
+            <div class="hero-features">
+                <div class="hero-feature-item">
+                    <span class="checkmark">✓</span>
+                    <span>Zero Runtime Overhead</span>
+                </div>
+                <div class="hero-feature-item">
+                    <span class="checkmark">✓</span>
+                    <span>Compile-Time Type Safety</span>
+                </div>
+                <div class="hero-feature-item">
+                    <span class="checkmark">✓</span>
+                    <span>Observable Everywhere</span>
+                </div>
+            </div>
+            
+            <div class="cta-buttons">
+                <a href="#installation" class="btn btn-primary">Start Building Now</a>
+                <a href="documentation.html" class="btn btn-secondary">View Documentation</a>
+            </div>
+        </section>
+
+        <!-- Integration Stack -->
+        <section class="integration-stack">
+            <h2>Built on Battle-Tested Infrastructure</h2>
+            <div class="stack-grid">
+                <div class="stack-item">
+                    <h3>🔥 Ash Framework</h3>
+                    <p>Type-safe resources, declarative APIs, and automatic GraphQL/REST endpoints. Multi-tenant isolation built-in.</p>
+                </div>
+                
+                <div class="stack-item">
+                    <h3>⚡ Phoenix LiveView</h3>
+                    <p>Real-time dashboards with zero-latency updates. Track type metrics and pattern match coverage live.</p>
+                </div>
+                
+                <div class="stack-item">
+                    <h3>📊 Observable</h3>
+                    <p>Every type definition tracked. Compilation metrics, safety scores, and usage stats—all observable.</p>
+                </div>
+                
+                <div class="stack-item">
+                    <h3>🗄️ PostgreSQL</h3>
+                    <p>Type metadata storage with full ACID guarantees. Query your type system like data.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Example -->
+        <section class="code-section">
+            <h2>See It In Action</h2>
+            <pre><code><span class="keyword">use</span> <span class="type">Alkeyword</span>
+<span class="keyword">use</span> <span class="type">Ash.Resource</span>
+
+<span class="comment"># Define structured data (product types)</span>
+<span class="keyword">alkeymatter</span> <span class="type">User</span> <span class="keyword">do</span>
+  <span class="function">elements</span> <span class="keyword">do</span>
+    <span class="function">reagent</span> id :: String.t()
+    <span class="function">reagent</span> name :: String.t()
+    <span class="function">reagent</span> email :: String.t()
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment"># Define variant types (sum types) with Ash integration</span>
+<span class="keyword">alkeyform</span> <span class="type">Result</span> <span class="keyword">do</span>
+  <span class="function">phases</span> <span class="keyword">do</span>
+    <span class="function">essence</span> Success, value :: any()
+    <span class="function">essence</span> Error, message :: String.t(), code :: integer()
+  <span class="keyword">end</span>
+  
+  <span class="comment"># Automatic Ash resource generation</span>
+  <span class="function">attributes</span> <span class="keyword">do</span>
+    <span class="function">attribute</span> :__variant__, :atom
+    <span class="function">attribute</span> :value, :map
+    <span class="function">attribute</span> :message, :string
+    <span class="function">attribute</span> :code, :integer
+  <span class="keyword">end</span>
+  
+  <span class="comment"># GraphQL union types auto-generated</span>
+  <span class="function">graphql</span> <span class="keyword">do</span>
+    <span class="function">type</span> :result_union
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment"># Type-safe construction with observability</span>
+result = <span class="function">synthesize</span> Result, response <span class="keyword">do</span>
+  {:ok, data} -> <span class="function">essence</span> Success, value: data
+  {:error, reason} -> <span class="function">essence</span> Error, message: reason, code: 500
+<span class="keyword">end</span>
+<span class="comment"># ⚗️ Compilation time: 12ms | Safety score: 99.2%</span>
+
+<span class="comment"># Type-safe pattern matching</span>
+message = <span class="function">distill</span> Result, result <span class="keyword">do</span>
+  <span class="function">essence</span> Success, value: data -> <span class="string">"Got: #{inspect(data)}"</span>
+  <span class="function">essence</span> Error, message: msg, code: code -> <span class="string">"Error #{code}: #{msg}"</span>
+<span class="keyword">end</span>
+<span class="comment"># ✓ Exhaustive pattern match verified at compile-time</span></code></pre>
+
+            <h3>Phoenix LiveView Dashboard</h3>
+            <pre><code><span class="keyword">defmodule</span> <span class="type">MyAppWeb.TypeDashboardLive</span> <span class="keyword">do</span>
+  <span class="keyword">use</span> <span class="type">Phoenix.LiveView</span>
+  <span class="keyword">use</span> <span class="type">Alkeyword.Observable</span>
+  
+  <span class="keyword">def</span> render(assigns) <span class="keyword">do</span>
+    ~H<span class="string">"""
+    &lt;div class="alkeyword-dashboard"&gt;
+      &lt;.live_metric 
+        label="Types Defined" 
+        value={@type_count}
+        trend={@type_trend} /&gt;
+      
+      &lt;.live_metric 
+        label="Pattern Match Coverage" 
+        value="#{@pattern_coverage}%"
+        status={:healthy} /&gt;
+      
+      &lt;.live_table 
+        id="recent-types"
+        rows={@recent_types}&gt;
+        &lt;:col :let={type} label="Name"&gt;&lt;%= type.name %&gt;&lt;/:col&gt;
+        &lt;:col :let={type} label="Safety"&gt;&lt;%= type.safety_score %>%&lt;/:col&gt;
+      &lt;/.live_table&gt;
+    &lt;/div&gt;
+    """</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
+        </section>
+
+        <!-- Features -->
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">⚗️</div>
+                <h3>Alchemical Metaphor</h3>
+                <p>Transform data with intuitive alchemical terminology. Matter and form, essence and synthesis—concepts that make sense.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Type Safety</h3>
+                <p>Catch errors at compile time with comprehensive type checking. No more runtime surprises from malformed data.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Observable Everything</h3>
+                <p>Every type tracked, every compilation measured. Real-time dashboards show safety scores and pattern match coverage.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Ash Integration</h3>
+                <p>Automatic resource generation, GraphQL unions, and declarative APIs. Alkeyword types are first-class Ash resources.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Phoenix LiveView</h3>
+                <p>Built-in dashboard components. Track your type system's health in real-time with zero-latency updates.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📦</div>
+                <h3>Production Ready</h3>
+                <p>98% production readiness validated. Comprehensive docs, monitoring, and troubleshooting guides included.</p>
+            </div>
+        </div>
+
+        <!-- Documentation Section -->
+        <section class="documentation" id="documentation">
+            <h2>📚 Comprehensive Documentation</h2>
+            <p class="subtitle">18 detailed guides covering implementation, deployment, operations, and business strategy - 98% Production Ready</p>
+            
+            <div class="doc-categories">
+                <div class="doc-category">
+                    <h3>🚀 Phase 1: Core Documentation</h3>
+                    <ul class="doc-list">
+                        <li><a href="documentation.html#DOC_01_GETTING_STARTED.md">Getting Started (15 Minutes)</a></li>
+                        <li><a href="documentation.html#DOC_02_CORE_CONCEPTS.md">Core Concepts: Alchemical Metaphor</a></li>
+                        <li><a href="documentation.html#DOC_03_PATTERN_MATCHING.md">Pattern Matching: Exhaustive Coverage</a></li>
+                        <li><a href="documentation.html#DOC_04_RECURSION_PATTERNS.md">Recursion Patterns: Catalyst vs Vial</a></li>
+                        <li><a href="documentation.html#DOC_05_ASH_INTEGRATION.md">Ash Framework Integration</a></li>
+                        <li><a href="documentation.html#DOC_06_PHOENIX_LIVEVIEW.md">Phoenix LiveView Integration</a></li>
+                        <li><a href="documentation.html#DOC_07_TYPE_INFERENCE.md">Type Inference Engine</a></li>
+                        <li><a href="documentation.html#ALKEYWORD_PHASE1_DOCS.md">📖 Complete Phase 1 Documentation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="doc-category">
+                    <h3>🔬 Advanced Topics (Documents 8-11)</h3>
+                    <ul class="doc-list">
+                        <li><a href="documentation.html#DOC_08_PERFORMANCE.md">Performance Profiling & Benchmarks</a></li>
+                        <li><a href="documentation.html#DOC_09_GRAPHQL.md">GraphQL Integration</a></li>
+                        <li><a href="documentation.html#DOC_10_MULTITENANT.md">Multi-tenant Patterns</a></li>
+                        <li><a href="documentation.html#DOC_11_OBSERVABLE.md">Observable Type System</a></li>
+                    </ul>
+                </div>
+                
+                <div class="doc-category">
+                    <h3>⚙️ Operations (Documents 12-15)</h3>
+                    <ul class="doc-list">
+                        <li><a href="documentation.html#DOC_12_DEPLOYMENT.md">Deployment Guide</a></li>
+                        <li><a href="documentation.html#DOC_13_MONITORING.md">Monitoring & Observability</a></li>
+                        <li><a href="documentation.html#DOC_14_TROUBLESHOOTING.md">Troubleshooting Guide</a></li>
+                        <li><a href="documentation.html#DOC_15_MIGRATION.md">Migration from Plain Elixir</a></li>
+                    </ul>
+                </div>
+                
+                <div class="doc-category">
+                    <h3>📈 Business & Strategy (Documents 16-18)</h3>
+                    <ul class="doc-list">
+                        <li><a href="documentation.html#DOC_16_ADR.md">Architecture Decision Records</a></li>
+                        <li><a href="documentation.html#DOC_17_SUSTAINABILITY.md">Open Source Sustainability</a></li>
+                        <li><a href="documentation.html#DOC_18_VALIDATION.md">Production Readiness Validation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="doc-category">
+                    <h3>🤖 Additional Resources</h3>
+                    <ul class="doc-list">
+                        <li><a href="documentation.html#ALKEYWORD_LLM_PROMPT_GUIDE.md">LLM Prompt Guide</a></li>
+                        <li><a href="documentation.html#DOCUMENTATION_INDEX.md">Documentation Index</a></li>
+                        <li><a href="documentation.html#COMPLETE_FILE_LIST.md">Complete File List</a></li>
+                        <li><a href="documentation.html#README.md">Documentation Package README</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="cta-buttons">
+                <a href="documentation.html" class="btn btn-primary">📖 Browse Complete Documentation</a>
+                <a href="documentation.html#ALKEYWORD_PHASE1_DOCS.md" class="btn btn-secondary">🚀 Quick Start Guide</a>
+            </div>
+        </section>
+
+        <!-- Installation -->
+        <section class="code-section" id="installation">
+            <h2>Installation</h2>
+            <p>Add Alkeyword and optional integrations to your <code>mix.exs</code> dependencies:</p>
+            <pre><code><span class="keyword">def</span> deps <span class="keyword">do</span>
+  [
+    {<span class="string">:alkeyword</span>, <span class="string">"~> 1.0"</span>},
+    {<span class="string">:alkeyword_ash</span>, <span class="string">"~> 1.0"</span>},          <span class="comment"># Ash Framework integration</span>
+    {<span class="string">:alkeyword_observable</span>, <span class="string">"~> 1.0"</span>},  <span class="comment"># Real-time observability</span>
+    {<span class="string">:alkeyword_phoenix</span>, <span class="string">"~> 1.0"</span>}       <span class="comment"># LiveView components</span>
+  ]
+<span class="keyword">end</span></code></pre>
+            
+            <p>Then add to your modules:</p>
+            <pre><code><span class="keyword">defmodule</span> <span class="type">MyApp.Types</span> <span class="keyword">do</span>
+  <span class="keyword">use</span> <span class="type">Alkeyword</span>
+  <span class="keyword">use</span> <span class="type">Alkeyword.Ash</span>          <span class="comment"># Enable Ash integration</span>
+  <span class="keyword">use</span> <span class="type">Alkeyword.Observable</span>  <span class="comment"># Enable metrics tracking</span>
+<span class="keyword">end</span></code></pre>
+
+            <h3>Quick Start (15 minutes)</h3>
+            <pre><code><span class="comment"># 1. Install Alkeyword</span>
+mix deps.get
+
+<span class="comment"># 2. Run migrations (sets up type metadata tables)</span>
+mix alkeyword.install
+
+<span class="comment"># 3. Start Phoenix with dashboard</span>
+mix phx.server
+
+<span class="comment"># 4. Visit http://localhost:4000/alkeyword/dashboard</span>
+<span class="comment">#    See your types, metrics, and safety scores in real-time!</span></code></pre>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="currentYear"></span> Alkeyword Project | <a href="https://github.com/c-u-l8er/alkeyword.com">GitHub</a> | <a href="#documentation">Documentation</a> | MIT License</p>
+            <p>Transform your Elixir with observable, type-safe alchemy ⚗️</p>
+        </div>
+    </footer>
+
+    <script>
+        // Set dynamic copyright year
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+    </script>
+
+    <div style="background: #000; padding: 2em 0 1em;">
+        <div style="margin: 0 auto; width: 728px;">
+            <iframe
+                src="https://ampersandboxdesign.com/advertisements/leaderboard-watermark.html"
+                width="728"
+                height="90"
+                frameborder="0"
+                scrolling="no"
+                style="border:none; overflow:hidden;"
+                title="AmperSandboxDesign Branding Design Agency Advertisement"
+            >
+            </iframe>
+            <div style="text-align: right; color: #ccc; font-size: 0.75em;">
+                ^ADVERTISEMENT
+            </div>
+        </div>
+    </div>
+</body>
+</html>
