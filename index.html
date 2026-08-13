@@ -30,7 +30,7 @@
   "url": "https://alkeyword.com/",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "macOS, Linux, Windows",
-  "softwareVersion": "0.6.1",
+  "softwareVersion": "0.6.2",
   "description": "A local-first evidence engine: crawls a domain into a typed claim graph, mines real queries, measures what AI search surfaces recover, and produces grounded research briefs. Refuses to generate below a material threshold.",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "author": { "@type": "Person", "name": "Travis Burandt" }
@@ -366,7 +366,7 @@
 <!-- ============================== RETRACTION ============================== -->
 <section class="band">
   <div class="wrap narrow">
-    <span class="tag">v0.6.0 and v0.6.1 · the tool caught itself, twice</span>
+    <span class="tag">v0.6.0, v0.6.1 and v0.6.2 · the tool caught itself, three times</span>
     <h2 class="sec">It published a gap that did not exist</h2>
 
     <p>Three days ago this crawler reported that our three documentation hosts served one
@@ -410,6 +410,32 @@
     standard library sounded authoritative. The rules are implemented locally now, every
     artifact records which engine produced it, and five more tests pin the semantics so the
     answer cannot depend on which Python a reader happens to have installed.</p>
+
+    <p>And a third time, for the least flattering reason of the three: <b>nobody had ever run
+    the whole pipeline in one pass.</b> Every stage had tests, the corpus had twenty-two
+    sites in it, and the loop from crawl to brief had never once been walked end to end
+    against a live site. Doing that took under a minute and found three defects no unit test
+    could reach. The worst: <code>brief.py</code> keyed probe results by question <b>ID</b>
+    and then looked them up by question <b>text</b>, so the two never met — measuring what
+    engines said about you contributed <em>nothing</em> to any brief, silently, and the rule
+    that treats a measured citation miss as the strongest signal available was unreachable
+    code. Alongside it, the line naming which engine a rate was measured on had that engine's
+    name hard-coded, and the function that reduces a URL to a comparable domain stripped
+    <code>www.</code> with <code>lstrip</code> — which removes <em>characters</em>, turning a
+    bare <code>wikipedia.org</code> into <code>ikipedia.org</code> and an encyclopedia into a
+    competitor.</p>
+
+    <blockquote>
+      <p>A test suite is evidence that the parts agree with themselves. It is not evidence
+      that the thing runs.</p>
+      <cite>Three green stages, one dead join between them, and fifteen passing tests.</cite>
+    </blockquote>
+
+    <p>Three more regression tests, each watched failing first. The same release also made
+    the download archives build from a script that unpacks what it just built and diffs it
+    against the tree — which immediately caught stray bytecode caches riding along inside
+    the shipped tarball, visible only because the archive came out 68% heavier than the
+    release before it.</p>
   </div>
 </section>
 
@@ -495,7 +521,7 @@
 <!-- ============================== STATUS ============================== -->
 <section class="band" id="status">
   <div class="wrap">
-    <span class="tag ctr">v0.6.1</span>
+    <span class="tag ctr">v0.6.2</span>
     <h2 class="sec ctr">Where this actually is</h2>
     <p class="sub ctr">There is no testimonial wall on this page and no logo strip, because a
     tool that refuses to fabricate output cannot fabricate its own marketing. So here is the
@@ -541,19 +567,19 @@
     Claude Code session you already have.</p>
 
     <div class="dl">
-      <a href="dist/alkeyword-0.6.1.tar.gz">
-        <span class="name">alkeyword-0.6.1.tar.gz</span>
+      <a href="dist/alkeyword-0.6.2.tar.gz">
+        <span class="name">alkeyword-0.6.2.tar.gz</span>
         <span class="meta">50 KB · macOS / Linux</span>
       </a>
-      <a href="dist/alkeyword-0.6.1.zip">
-        <span class="name">alkeyword-0.6.1.zip</span>
-        <span class="meta">58 KB · Windows</span>
+      <a href="dist/alkeyword-0.6.2.zip">
+        <span class="name">alkeyword-0.6.2.zip</span>
+        <span class="meta">59 KB · Windows</span>
       </a>
     </div>
 
     <div class="term">
       <div class="term-bar"><span class="dots"><i></i><i></i><i></i></span><span>terminal</span></div>
-<pre>tar xzf alkeyword-0.6.1.tar.gz
+<pre>tar xzf alkeyword-0.6.2.tar.gz
 cd alkeyword
 ./install.sh
 
@@ -578,7 +604,7 @@ cd alkeyword
     <p>Bring a domain name. Get back what your own site already proves, matched to what people
     are actually asking — and an honest refusal where the material isn't there.</p>
     <div class="cta">
-      <a class="btn big" href="#download">Download v0.6.1</a>
+      <a class="btn big" href="#download">Download v0.6.2</a>
       <a class="ghost big" href="#explore">Explore the real runs</a>
     </div>
   </div>
@@ -600,7 +626,7 @@ cd alkeyword
     </div>
   </div>
   <div class="wrap fbot">
-    <span>v0.6.1 · early, and specific about which parts are.</span>
+    <span>v0.6.2 · early, and specific about which parts are.</span>
     <span>Every figure on this page regenerates from the download.</span>
   </div>
 </footer>
