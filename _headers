@@ -1,0 +1,10 @@
+# The archived Elixir site is kept reachable so old links do not 404, but it must not be
+# indexed. Leaving it indexable would reproduce the exact failure alkeyword exists to find:
+# a superseded claim ("alkeyword = observable type safety for Elixir") stated across 20 pages,
+# out-weighing the current one stated on a single page. Signal dominance decides what an
+# engine learns, not recency.
+#
+# X-Robots-Tag rather than a robots.txt Disallow on purpose: a disallowed path is never
+# fetched, so a noindex placed there would never be read.
+/old_scrap/*
+  X-Robots-Tag: noindex
