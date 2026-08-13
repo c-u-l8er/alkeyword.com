@@ -8,9 +8,34 @@
      before it truncates. -->
 <meta name="description" content="Bring a domain name. Alkeyword crawls the site, measures what AI engines say about it, and turns the site's own claims into research briefs. No API keys.">
 
+<!-- G8 and G10 out of this tool's own gap library. A tool that reports missing
+     canonicals and missing schema, on a site that had neither, is a finding about
+     itself. Added after its own audit said so. -->
+<link rel="canonical" href="https://alkeyword.com/">
+
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://alkeyword.com/">
+<meta property="og:site_name" content="Alkeyword">
 <meta property="og:title" content="Alkeyword — transmute a domain into AI-search visibility">
 <meta property="og:description" content="Research briefs built from your own claims, never invented. Below the material threshold it refuses to generate and tells you what is missing. Runs on your Claude subscription.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Alkeyword — transmute a domain into AI-search visibility">
+<meta name="twitter:description" content="Bring a domain name. It reads the site, mines the questions people ask, measures what engines say back, and refuses to generate where the material isn't there.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Alkeyword",
+  "url": "https://alkeyword.com/",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "macOS, Linux, Windows",
+  "softwareVersion": "0.5.0",
+  "description": "A local-first evidence engine: crawls a domain into a typed claim graph, mines real queries, measures what AI search surfaces recover, and produces grounded research briefs. Refuses to generate below a material threshold.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Person", "name": "Travis Burandt" }
+}
+</script>
 
 <!-- 🜛 — the alchemical sigil the name comes from. Inline SVG rather than a
      hosted icon, so nothing in this document reaches off-origin. See the note in
@@ -191,13 +216,16 @@
     </div>
 
     <p class="sub" style="margin-top:30px">This is deliberate, and relaxing it under revenue
-    pressure is the one change that would turn this into the thing it was built against.
-    Google's March 2026 core update named <b>scaled content abuse</b> specifically — sites
-    publishing bulk AI pages without editorial oversight saw 50–80% traffic drops, with
-    manual actions issued. Five values are clamped in <code>config.py</code> and a sixth
-    floors every form's requirements — three of them are minimums you cannot lower, one is a
-    ceiling on pieces per cycle, and human review is pinned on. A safety constraint you can
-    silently delete is not one.</p>
+    pressure is the one change that would turn this into the thing it was built against.</p>
+
+    <p class="sub">Worth being precise about what the risk actually is, because the scary
+    version is wrong. Google does not prohibit AI-assisted content. Its
+    <b>scaled content abuse</b> policy — introduced with the March <b>2024</b> spam update —
+    targets producing many pages primarily to manipulate rankings, and says so
+    <i>“no matter how it's created.”</i> Human, automated or generated is not the test; volume
+    of low-value pages is. So a tool that hands one person one grounded brief is not walking
+    up to that line, and a tool that publishes thirty a month is, regardless of who typed
+    them.</p>
   </div>
 </section>
 
@@ -210,17 +238,21 @@
     people churn out of. Every brief carries the raw material with it, so writing is
     assembly — not another research job handed back to you.</p>
 
-    <div class="tabs" id="tabs">
-      <button data-tab="crawl" class="on"><span class="step">1</span>Crawl</button>
-      <button data-tab="expand"><span class="step">2a</span>Expand</button>
-      <button data-tab="probe"><span class="step">2b</span>Probe</button>
-      <button data-tab="brief"><span class="step">4</span>Brief</button>
+    <div class="tabs" id="tabs" role="tablist" aria-label="Pipeline stages">
+      <button role="tab" id="tab-crawl" aria-controls="pane-crawl" aria-selected="true"
+              data-tab="crawl" class="on"><span class="step">1</span>Crawl</button>
+      <button role="tab" id="tab-expand" aria-controls="pane-expand" aria-selected="false"
+              tabindex="-1" data-tab="expand"><span class="step">2a</span>Expand</button>
+      <button role="tab" id="tab-probe" aria-controls="pane-probe" aria-selected="false"
+              tabindex="-1" data-tab="probe"><span class="step">2b</span>Probe</button>
+      <button role="tab" id="tab-brief" aria-controls="pane-brief" aria-selected="false"
+              tabindex="-1" data-tab="brief"><span class="step">4</span>Brief</button>
     </div>
 
     <div id="tabpanes">
 
       <!-- ---------------- crawl ---------------- -->
-      <div class="tabpane" data-pane="crawl">
+      <div class="tabpane" data-pane="crawl" id="pane-crawl" role="tabpanel" aria-labelledby="tab-crawl" tabindex="0">
         <p class="tabnote"><b>Deterministic, free, and where everything starts.</b> Fetches
         the site with the standard library only — there is nothing to <code>pip install</code>
         — and builds a typed claim graph plus six findings that cost no model calls at all.
@@ -234,7 +266,7 @@
       </div>
 
       <!-- ---------------- expand ---------------- -->
-      <div class="tabpane" data-pane="expand" hidden>
+      <div class="tabpane" data-pane="expand" id="pane-expand" role="tabpanel" aria-labelledby="tab-expand" tabindex="0" hidden>
         <p class="tabnote"><b>Real queries, free, no API key</b> — mined from Google and
         DuckDuckGo autocomplete, which is what people actually typed. Then the column no
         keyword tool has: each query cross-referenced against the site's own claim graph to
@@ -257,7 +289,7 @@
       </div>
 
       <!-- ---------------- probe ---------------- -->
-      <div class="tabpane" data-pane="probe" hidden>
+      <div class="tabpane" data-pane="probe" id="pane-probe" role="tabpanel" aria-labelledby="tab-probe" tabindex="0" hidden>
         <p class="tabnote"><b>Ask the engine what it actually says about you.</b> Questions
         are generated from the claim graph — brand, category, and each high-value claim
         inverted into the question it answers — then asked <i>N</i> times, because engines are
@@ -272,13 +304,14 @@
       </div>
 
       <!-- ---------------- brief ---------------- -->
-      <div class="tabpane" data-pane="brief" hidden>
-        <p class="tabnote"><b>The product is the research. The human writes.</b> Over 90% of
-        pages cited in AI search already contain AI-generated text, so more of it was never
-        the differentiator — the research behind it is, and human-written content earns about
-        5.44× the traffic and holds it. Briefs cluster queries by the claims they share, pick
-        the highest-value form the material actually supports, and attach the material
-        verbatim with its source URL.</p>
+      <div class="tabpane" data-pane="brief" id="pane-brief" role="tabpanel" aria-labelledby="tab-brief" tabindex="0" hidden>
+        <p class="tabnote"><b>The product is the research. The human writes.</b> Briefs cluster
+        queries by the claims they share, pick the highest-value form the material actually
+        supports, and attach the material verbatim with its source URL. The bet is that
+        research, not text generation, is the scarce input — one experiment worth citing rather
+        than asserting: NP Digital published 744 articles across 68 sites and found the
+        human-written set at <b>5.44× the traffic</b> by month five. One agency, one study,
+        pointing the same way as the argument; not a law.</p>
         <div class="term">
           <div class="term-bar"><span class="dots"><i></i><i></i><i></i></span>
             <span>python3 brief.py crawl.json exp.json --out briefs.md</span></div>
@@ -375,7 +408,7 @@
       <div class="gap"><span class="id">G7</span><b>Orphan</b><span>A valuable page with almost nothing linking to it. Internal linking — no generation needed.</span></div>
       <div class="gap"><span class="id">G8</span><b>Thin entity</b><span>No schema, no author, no about page. Nearly free to fix, and portfolio-wide.</span></div>
       <div class="gap urgent"><span class="id">G9</span><b>Blocked</b><span><code>robots.txt</code> blocks AI crawlers. Nothing downstream matters until this is cleared.</span></div>
-      <div class="gap"><span class="id">G10</span><b>Duplicate URLs</b><span>The same content at more than one URL with no canonical. Found by the crawl, added to the spec because live input surfaced it.</span></div>
+      <div class="gap"><span class="id">G10</span><b>Duplicate URLs</b><span>The same content served at more than one URL, splitting authority between them. Found by the crawl, added to the spec because live input surfaced it.</span></div>
     </div>
   </div>
 </section>
@@ -479,8 +512,11 @@ cd alkeyword
 
     <p class="caption">Requires Claude Code and <code>python3</code>.
     <code>./install.sh --project</code> installs into one repo instead of your user account.
-    Everything the tool learns stays in <code>~/.alkeyword</code> on your machine — there is
-    no server, no account, and nothing leaves the box.</p>
+    There is no Alkeyword server and no Alkeyword account: every artifact it produces lives in
+    <code>~/.alkeyword</code> on your machine. Requests do leave the machine, and they go where
+    the analysis requires — the site being crawled, Google and DuckDuckGo autocomplete, and
+    whichever engine you probe. Nothing is routed through us, because there is no us to route
+    it through.</p>
   </div>
 </section>
 

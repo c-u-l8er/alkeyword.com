@@ -1,0 +1,12 @@
+# Nothing here is disallowed. G9 in this tool's own gap library is "robots.txt
+# blocks AI crawlers", and the first thing a crawl reports is whether that fired
+# — so this file exists to be explicit rather than absent.
+#
+# The archived Elixir site under /old_scrap/ is deliberately NOT disallowed here.
+# It is served X-Robots-Tag: noindex instead (see _headers), because a disallowed
+# path is never fetched and a noindex placed there would never be read.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://alkeyword.com/sitemap.xml

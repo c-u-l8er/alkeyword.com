@@ -112,7 +112,7 @@ function heroLines(s) {
     ? `  <span class="r">⚠</span> robots.txt blocks ${esc(s.blocked.join(', '))}`
     : '  <span class="v">✓</span> robots.txt does not block AI crawlers');
   const f = s.findings;
-  if (f.duplicate_urls) L.push(`  <span class="r">⚠</span> ${f.duplicate_urls} duplicate-URL groups   <span class="d">no canonical between them</span>`);
+  if (f.duplicate_urls) L.push(`  <span class="r">⚠</span> ${f.duplicate_urls} duplicate-URL groups   <span class="d">identical body text</span>`);
   if (f.orphans)        L.push(`  <span class="r">⚠</span> ${f.orphans} orphaned value pages`);
   if (f.unsourced)      L.push(`  <span class="r">⚠</span> ${f.unsourced} unsourced quantities`);
   L.push(`  <span class="r">⚠</span> ${f.no_schema} of ${s.pages} pages have no schema markup`);
@@ -150,9 +150,12 @@ if ('IntersectionObserver' in window) {
 /* ------------------------------------------------------------------ explorer */
 
 const rail = $('#rail');
+rail.setAttribute('role', 'listbox');
+rail.setAttribute('aria-label', 'Crawled surfaces');
 rail.innerHTML = SURFACES.map((s, i) => `
-  <button data-i="${i}" class="${i === 0 ? 'on' : ''}">
-    <span>${esc(s.domain)}</span><span class="n">${num(s.claims)}</span>
+  <button role="option" aria-selected="${i === 0}" data-i="${i}" class="${i === 0 ? 'on' : ''}">
+    <span>${esc(s.domain)}</span>
+    <span class="n">${num(s.claims)}<span class="sr"> claims</span></span>
   </button>`).join('');
 
 /* The terminal caps its ASCII bars at 38 blocks, which is right for a terminal
@@ -244,21 +247,33 @@ function renderEmpty(s) {
   const isEmpty = s.claims === 0;
   box.hidden = !isEmpty;
   if (!isEmpty) return;
+  /* Three different facts, and the tool only measured the first. Google has
+     rendered JavaScript for years, so "invisible to every engine" is exactly the
+     kind of unearned generalisation this product exists to catch — including
+     when it is our own page making it. */
   box.innerHTML = `
     <div class="vhead">0 claims — and that is the finding</div>
     <p><b>${esc(s.domain)}</b> returned ${s.pages} page${s.pages === 1 ? '' : 's'},
-    HTTP 200, and <b>${s.words} words of extractable text</b>. The content is real; it is
-    inside a JSON blob in a <code>&lt;script&gt;</code> tag, so an engine's crawler sees
-    what this crawler saw — nothing. Not blocked by <code>robots.txt</code>; simply
-    unreadable.</p>
+    HTTP 200, and <b>${s.words} words of extractable text</b>. The content is real; it sits
+    in a JSON blob inside a <code>&lt;script&gt;</code> tag. Not blocked by
+    <code>robots.txt</code> — just not in the HTML.</p>
     <p style="margin-top:10px">Across the three documentation hosts in this list that is
-    <b>458,382 words</b> and <b>229 documents</b> dark — 6.2× everything else on this page
-    combined. No keyword tool surfaces it, because there are no keywords to see.</p>`;
+    <b>458,382 words</b> and <b>229 documents</b> that no static extractor can read, against
+    73,943 the rest of the portfolio makes plain. What that costs you depends on who is
+    reading, and those are three separate questions the tool keeps separate:</p>
+    <p style="margin-top:10px">
+      <b>Measured:</b> invisible to Alkeyword's static extractor. ·
+      <b>Unmeasured:</b> Google has rendered JavaScript for years, so it may well see this. ·
+      <b>Unknown:</b> whether a given AI crawler renders at all — that needs a probe, not an
+      assumption.</p>`;
 }
 
 function select(i) {
   const s = SURFACES[i];
-  $$('#rail button').forEach((b, j) => b.classList.toggle('on', i === j));
+  $$('#rail button').forEach((b, j) => {
+    b.classList.toggle('on', i === j);
+    b.setAttribute('aria-selected', i === j ? 'true' : 'false');
+  });
   const ent = $('#sEntity');
   ent.textContent = s.entity || '—';
   ent.classList.toggle('long', (s.entity || '').length > 22);
@@ -342,12 +357,38 @@ paintRefusal();
 
 /* ------------------------------------------------------------------ tabs */
 
+/* Proper tablist semantics: roving tabindex, arrow/Home/End keys, aria-selected
+   tracking. A tab strip that only answers to a mouse is a tab strip half the
+   people cannot use. */
+const tabBtns = $$('#tabs button');
+
+function selectTab(b, focus) {
+  const want = b.dataset.tab;
+  tabBtns.forEach((x) => {
+    const on = x === b;
+    x.classList.toggle('on', on);
+    x.setAttribute('aria-selected', on ? 'true' : 'false');
+    x.tabIndex = on ? 0 : -1;
+  });
+  $$('.tabpane').forEach((p) => { p.hidden = p.dataset.pane !== want; });
+  if (focus) b.focus();
+}
+
 $('#tabs').addEventListener('click', (e) => {
   const b = e.target.closest('button');
-  if (!b) return;
-  const want = b.dataset.tab;
-  $$('#tabs button').forEach((x) => x.classList.toggle('on', x === b));
-  $$('.tabpane').forEach((p) => { p.hidden = p.dataset.pane !== want; });
+  if (b) selectTab(b);
+});
+
+$('#tabs').addEventListener('keydown', (e) => {
+  const i = tabBtns.indexOf(document.activeElement);
+  if (i < 0) return;
+  const last = tabBtns.length - 1;
+  const to = { ArrowRight: i + 1 > last ? 0 : i + 1,
+               ArrowLeft: i - 1 < 0 ? last : i - 1,
+               Home: 0, End: last }[e.key];
+  if (to === undefined) return;
+  e.preventDefault();
+  selectTab(tabBtns[to], true);
 });
 
 /* ---- stage 1 pane: the full report, not the condensed hero version ---- */
@@ -433,7 +474,7 @@ const BRIEF_SAMPLE = [
   '  <span class="d">https://opensentience.org/resource-arithmetic</span>',
   '  <span class="b">c0480</span> <span class="d">definition</span> "Capacity is a conserved resource: learning a task',
   '        moves capacity from free to committed (plasticity spent on stability)…"',
-  '        <span class="r">⚠ also served at …/resource-arithmetic.html — duplicate URL, no canonical</span>',
+  '        <span class="r">⚠ also served at …/resource-arithmetic.html — duplicate URL; check for a canonical</span>',
   '',
   '  <span class="d">https://opensentience.org/epistemic-arithmetic</span>',
   '  <span class="b">c0430</span> <span class="d">definition</span> "Learning is a truthful public announcement:',
