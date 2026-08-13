@@ -30,7 +30,7 @@
   "url": "https://alkeyword.com/",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "macOS, Linux, Windows",
-  "softwareVersion": "0.6.0",
+  "softwareVersion": "0.6.1",
   "description": "A local-first evidence engine: crawls a domain into a typed claim graph, mines real queries, measures what AI search surfaces recover, and produces grounded research briefs. Refuses to generate below a material threshold.",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "author": { "@type": "Person", "name": "Travis Burandt" }
@@ -366,7 +366,7 @@
 <!-- ============================== RETRACTION ============================== -->
 <section class="band">
   <div class="wrap narrow">
-    <span class="tag">v0.6.0 · the tool caught itself</span>
+    <span class="tag">v0.6.0 and v0.6.1 · the tool caught itself, twice</span>
     <h2 class="sec">It published a gap that did not exist</h2>
 
     <p>Three days ago this crawler reported that our three documentation hosts served one
@@ -400,6 +400,16 @@
     <code>user-agent: gptbot</code> blocking everything registered as unblocked, and the
     configuration layer described limits the running code never read. Each has a regression
     test that was watched failing first.</p>
+
+    <p>Then it happened again, one release later, in a subtler form. The robots repair
+    delegated to Python's <code>urllib.robotparser</code> and a code comment credited it with
+    standards-level rule handling. That was true on the machine it was written on and false
+    on four of the five interpreters we tested — <b>3.9 through 3.12 have no longest-match
+    precedence, no wildcards and no end anchors</b>; 3.13.14 has all three. Same error class
+    as the canonical bug: a capability asserted rather than observed, this time because the
+    standard library sounded authoritative. The rules are implemented locally now, every
+    artifact records which engine produced it, and five more tests pin the semantics so the
+    answer cannot depend on which Python a reader happens to have installed.</p>
   </div>
 </section>
 
@@ -485,7 +495,7 @@
 <!-- ============================== STATUS ============================== -->
 <section class="band" id="status">
   <div class="wrap">
-    <span class="tag ctr">v0.6.0</span>
+    <span class="tag ctr">v0.6.1</span>
     <h2 class="sec ctr">Where this actually is</h2>
     <p class="sub ctr">There is no testimonial wall on this page and no logo strip, because a
     tool that refuses to fabricate output cannot fabricate its own marketing. So here is the
@@ -496,8 +506,8 @@
         <span class="chip measured">measured</span>
         <b>Stage 1 — crawl and free findings</b>
         <span>Run against 22 live surfaces. 20 returned pages; 4,506 claims and every finding
-        on this page came out of it. Ten regression tests cover the four faults v0.5.0
-        shipped, each one watched failing before its repair.</span>
+        on this page came out of it. Fifteen regression tests cover the four faults v0.5.0
+        shipped and the one v0.6.0 introduced, each watched failing before its repair.</span>
       </div>
       <div class="st">
         <span class="chip once">run once, for real</span>
@@ -531,19 +541,19 @@
     Claude Code session you already have.</p>
 
     <div class="dl">
-      <a href="dist/alkeyword-0.6.0.tar.gz">
-        <span class="name">alkeyword-0.6.0.tar.gz</span>
-        <span class="meta">48 KB · macOS / Linux</span>
+      <a href="dist/alkeyword-0.6.1.tar.gz">
+        <span class="name">alkeyword-0.6.1.tar.gz</span>
+        <span class="meta">50 KB · macOS / Linux</span>
       </a>
-      <a href="dist/alkeyword-0.6.0.zip">
-        <span class="name">alkeyword-0.6.0.zip</span>
-        <span class="meta">55 KB · Windows</span>
+      <a href="dist/alkeyword-0.6.1.zip">
+        <span class="name">alkeyword-0.6.1.zip</span>
+        <span class="meta">58 KB · Windows</span>
       </a>
     </div>
 
     <div class="term">
       <div class="term-bar"><span class="dots"><i></i><i></i><i></i></span><span>terminal</span></div>
-<pre>tar xzf alkeyword-0.6.0.tar.gz
+<pre>tar xzf alkeyword-0.6.1.tar.gz
 cd alkeyword
 ./install.sh
 
@@ -568,7 +578,7 @@ cd alkeyword
     <p>Bring a domain name. Get back what your own site already proves, matched to what people
     are actually asking — and an honest refusal where the material isn't there.</p>
     <div class="cta">
-      <a class="btn big" href="#download">Download v0.6.0</a>
+      <a class="btn big" href="#download">Download v0.6.1</a>
       <a class="ghost big" href="#explore">Explore the real runs</a>
     </div>
   </div>
@@ -590,7 +600,7 @@ cd alkeyword
     </div>
   </div>
   <div class="wrap fbot">
-    <span>v0.6.0 · early, and specific about which parts are.</span>
+    <span>v0.6.1 · early, and specific about which parts are.</span>
     <span>Every figure on this page regenerates from the download.</span>
   </div>
 </footer>
