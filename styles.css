@@ -7,9 +7,17 @@
    the terminal it is selling, because most of the page IS terminal
    output.
 
-   No build step, no framework, no webfont, no external request of
-   any kind — the install section promises the tool phones nowhere,
-   and the page it makes that promise on should not either.
+   No build step, no framework, no webfont, no CDN — the install
+   section promises the tool phones nowhere, and the page it makes
+   that promise on should not either.
+
+   One caveat, because overstating this would be the exact failure
+   the tool looks for: in production the page does load one external
+   script it did not ask for. Cloudflare injects its Web Analytics
+   beacon (static.cloudflareinsights.com) at the edge — it is absent
+   from the HTML in this repo and absent when served locally. It is a
+   zone setting, not markup, and turning it off is a dashboard
+   change rather than a commit.
    --------------------------------------------------------------- */
 
 :root {
