@@ -8,15 +8,15 @@ export const SURFACES = [
   "entity": "Agent memory that improves itself",
   "pages": 30,
   "words": 45939,
-  "claims": 2826,
+  "claims": 2810,
   "types": {
    "entity": 0,
-   "quantity": 171,
+   "quantity": 163,
    "quote": 137,
    "definition": 153,
-   "comparison": 64,
+   "comparison": 57,
    "question": 1,
-   "credential": 146,
+   "credential": 145,
    "process": 0,
    "attribute": 2154
   },
@@ -26,7 +26,7 @@ export const SURFACES = [
     "name": "Statistics / data page",
     "type": "quantity",
     "need": 5,
-    "have": 171,
+    "have": 163,
     "ok": true
    },
    {
@@ -47,7 +47,7 @@ export const SURFACES = [
     "name": "Comparison page",
     "type": "comparison",
     "need": 6,
-    "have": 64,
+    "have": 57,
     "ok": true
    },
    {
@@ -61,9 +61,13 @@ export const SURFACES = [
     "name": "Entity / about page",
     "type": "credential",
     "need": 3,
-    "have": 146,
+    "have": 145,
     "ok": true
    }
+  ],
+  "canonicals": 0,
+  "dup_status": [
+   "absent"
   ],
   "findings": {
    "contradictions": 0,
@@ -91,13 +95,13 @@ export const SURFACES = [
   "entity": "OpenSentience",
   "pages": 16,
   "words": 12322,
-  "claims": 539,
+  "claims": 533,
   "types": {
    "entity": 0,
-   "quantity": 32,
+   "quantity": 31,
    "quote": 25,
-   "definition": 71,
-   "comparison": 18,
+   "definition": 70,
+   "comparison": 14,
    "question": 0,
    "credential": 0,
    "process": 0,
@@ -109,14 +113,14 @@ export const SURFACES = [
     "name": "Statistics / data page",
     "type": "quantity",
     "need": 5,
-    "have": 32,
+    "have": 31,
     "ok": true
    },
    {
     "name": "Glossary / definitions",
     "type": "definition",
     "need": 3,
-    "have": 71,
+    "have": 70,
     "ok": true
    },
    {
@@ -130,7 +134,7 @@ export const SURFACES = [
     "name": "Comparison page",
     "type": "comparison",
     "need": 6,
-    "have": 18,
+    "have": 14,
     "ok": true
    },
    {
@@ -147,6 +151,10 @@ export const SURFACES = [
     "have": 0,
     "ok": false
    }
+  ],
+  "canonicals": 0,
+  "dup_status": [
+   "absent"
   ],
   "findings": {
    "contradictions": 1,
@@ -174,12 +182,12 @@ export const SURFACES = [
   "entity": "[&] Ampersand Box",
   "pages": 6,
   "words": 7301,
-  "claims": 397,
+  "claims": 393,
   "types": {
    "entity": 0,
    "quantity": 27,
    "quote": 2,
-   "definition": 31,
+   "definition": 27,
    "comparison": 17,
    "question": 0,
    "credential": 10,
@@ -199,7 +207,7 @@ export const SURFACES = [
     "name": "Glossary / definitions",
     "type": "definition",
     "need": 3,
-    "have": 31,
+    "have": 27,
     "ok": true
    },
    {
@@ -231,6 +239,10 @@ export const SURFACES = [
     "ok": true
    }
   ],
+  "canonicals": 0,
+  "dup_status": [
+   "absent"
+  ],
   "findings": {
    "contradictions": 0,
    "duplicate_urls": 1,
@@ -253,21 +265,21 @@ export const SURFACES = [
   ]
  },
  {
-  "domain": "fleetprompt.com",
-  "entity": "FleetPrompt",
-  "pages": 1,
-  "words": 1231,
-  "claims": 66,
+  "domain": "docs.ampersandboxdesign.com",
+  "entity": "Ampersand Box",
+  "pages": 30,
+  "words": 3916,
+  "claims": 218,
   "types": {
    "entity": 0,
-   "quantity": 5,
-   "quote": 1,
-   "definition": 10,
-   "comparison": 5,
+   "quantity": 14,
+   "quote": 6,
+   "definition": 8,
+   "comparison": 3,
    "question": 0,
-   "credential": 0,
+   "credential": 1,
    "process": 0,
-   "attribute": 45
+   "attribute": 186
   },
   "blocked": [],
   "forms": [
@@ -275,14 +287,14 @@ export const SURFACES = [
     "name": "Statistics / data page",
     "type": "quantity",
     "need": 5,
-    "have": 5,
+    "have": 14,
     "ok": true
    },
    {
     "name": "Glossary / definitions",
     "type": "definition",
     "need": 3,
-    "have": 10,
+    "have": 8,
     "ok": true
    },
    {
@@ -296,7 +308,7 @@ export const SURFACES = [
     "name": "Comparison page",
     "type": "comparison",
     "need": 6,
-    "have": 5,
+    "have": 3,
     "ok": false
    },
    {
@@ -310,28 +322,30 @@ export const SURFACES = [
     "name": "Entity / about page",
     "type": "credential",
     "need": 3,
-    "have": 0,
+    "have": 1,
     "ok": false
    }
   ],
+  "canonicals": 30,
+  "dup_status": [],
   "findings": {
    "contradictions": 0,
    "duplicate_urls": 0,
-   "orphans": 1,
-   "unsourced": 0,
-   "spa": 0,
+   "orphans": 4,
+   "unsourced": 14,
+   "spa": 20,
    "no_schema": 1
   },
   "material": [
    {
     "type": "quantity",
-    "text": "A FreeBSD 15 distribution assembled from pkgbase: 364 MB and 50 packages in the bare server flavour, 625 MB and 56 once it carries the verifier and the interpreter that runs it.",
-    "url": "https://fleetprompt.com/"
+    "text": "Slice B, Commit 3 \u2014 the ~~ surface: closure memo \u2014 Status: CLOSED. binding_run48 PASS_REF_AND_NATIVE (6s, 71 rows). mutate48 19/19 ALL CAUGHT.",
+    "url": "https://docs.ampersandboxdesign.com/TRVM"
    },
    {
     "type": "quantity",
-    "text": "The stack costs 14 MB; the interpreter it needs costs rather more, taking the server image from 364 MB to 625 MB and 50 packages to 56.",
-    "url": "https://fleetprompt.com/"
+    "text": "Its reason to exist is not single-node speed (HVM5 shows an AI-assisted reducer reaches ~10x over its predecessor in days \u2014\u2026",
+    "url": "https://docs.ampersandboxdesign.com/TRVM/docs/spec"
    }
   ]
  },
@@ -397,6 +411,8 @@ export const SURFACES = [
     "ok": false
    }
   ],
+  "canonicals": 0,
+  "dup_status": [],
   "findings": {
    "contradictions": 0,
    "duplicate_urls": 0,
@@ -419,16 +435,101 @@ export const SURFACES = [
   ]
  },
  {
+  "domain": "fleetprompt.com",
+  "entity": "FleetPrompt",
+  "pages": 1,
+  "words": 1231,
+  "claims": 65,
+  "types": {
+   "entity": 0,
+   "quantity": 5,
+   "quote": 1,
+   "definition": 9,
+   "comparison": 5,
+   "question": 0,
+   "credential": 0,
+   "process": 0,
+   "attribute": 45
+  },
+  "blocked": [],
+  "forms": [
+   {
+    "name": "Statistics / data page",
+    "type": "quantity",
+    "need": 5,
+    "have": 5,
+    "ok": true
+   },
+   {
+    "name": "Glossary / definitions",
+    "type": "definition",
+    "need": 3,
+    "have": 9,
+    "ok": true
+   },
+   {
+    "name": "FAQ page",
+    "type": "question",
+    "need": 5,
+    "have": 0,
+    "ok": false
+   },
+   {
+    "name": "Comparison page",
+    "type": "comparison",
+    "need": 6,
+    "have": 5,
+    "ok": false
+   },
+   {
+    "name": "How-it-works explainer",
+    "type": "process",
+    "need": 1,
+    "have": 0,
+    "ok": false
+   },
+   {
+    "name": "Entity / about page",
+    "type": "credential",
+    "need": 3,
+    "have": 0,
+    "ok": false
+   }
+  ],
+  "canonicals": 0,
+  "dup_status": [],
+  "findings": {
+   "contradictions": 0,
+   "duplicate_urls": 0,
+   "orphans": 1,
+   "unsourced": 0,
+   "spa": 0,
+   "no_schema": 1
+  },
+  "material": [
+   {
+    "type": "quantity",
+    "text": "A FreeBSD 15 distribution assembled from pkgbase: 364 MB and 50 packages in the bare server flavour, 625 MB and 56 once it carries the verifier and the interpreter that runs it.",
+    "url": "https://fleetprompt.com/"
+   },
+   {
+    "type": "quantity",
+    "text": "The stack costs 14 MB; the interpreter it needs costs rather more, taking the server image from 364 MB to 625 MB and 50 packages to 56.",
+    "url": "https://fleetprompt.com/"
+   }
+  ]
+ },
+ {
   "domain": "specprompt.com",
   "entity": "SpecPrompt",
   "pages": 1,
   "words": 1116,
-  "claims": 62,
+  "claims": 61,
   "types": {
    "entity": 0,
    "quantity": 6,
    "quote": 1,
-   "definition": 6,
+   "definition": 5,
    "comparison": 3,
    "question": 1,
    "credential": 1,
@@ -448,7 +549,7 @@ export const SURFACES = [
     "name": "Glossary / definitions",
     "type": "definition",
     "need": 3,
-    "have": 6,
+    "have": 5,
     "ok": true
    },
    {
@@ -480,6 +581,8 @@ export const SURFACES = [
     "ok": false
    }
   ],
+  "canonicals": 0,
+  "dup_status": [],
   "findings": {
    "contradictions": 0,
    "duplicate_urls": 0,
@@ -563,6 +666,8 @@ export const SURFACES = [
     "ok": false
    }
   ],
+  "canonicals": 0,
+  "dup_status": [],
   "findings": {
    "contradictions": 0,
    "duplicate_urls": 0,
@@ -646,6 +751,8 @@ export const SURFACES = [
     "ok": false
    }
   ],
+  "canonicals": 1,
+  "dup_status": [],
   "findings": {
    "contradictions": 0,
    "duplicate_urls": 0,
@@ -729,6 +836,8 @@ export const SURFACES = [
     "ok": false
    }
   ],
+  "canonicals": 2,
+  "dup_status": [],
   "findings": {
    "contradictions": 0,
    "duplicate_urls": 0,
@@ -812,6 +921,8 @@ export const SURFACES = [
     "ok": false
    }
   ],
+  "canonicals": 0,
+  "dup_status": [],
   "findings": {
    "contradictions": 0,
    "duplicate_urls": 0,
@@ -838,12 +949,12 @@ export const SURFACES = [
   "entity": "TickTickClock",
   "pages": 1,
   "words": 515,
-  "claims": 35,
+  "claims": 34,
   "types": {
    "entity": 0,
    "quantity": 1,
    "quote": 0,
-   "definition": 3,
+   "definition": 2,
    "comparison": 1,
    "question": 0,
    "credential": 0,
@@ -863,8 +974,8 @@ export const SURFACES = [
     "name": "Glossary / definitions",
     "type": "definition",
     "need": 3,
-    "have": 3,
-    "ok": true
+    "have": 2,
+    "ok": false
    },
    {
     "name": "FAQ page",
@@ -895,6 +1006,8 @@ export const SURFACES = [
     "ok": false
    }
   ],
+  "canonicals": 0,
+  "dup_status": [],
   "findings": {
    "contradictions": 0,
    "duplicate_urls": 0,
@@ -978,6 +1091,8 @@ export const SURFACES = [
     "ok": false
    }
   ],
+  "canonicals": 0,
+  "dup_status": [],
   "findings": {
    "contradictions": 0,
    "duplicate_urls": 0,
@@ -1061,6 +1176,8 @@ export const SURFACES = [
     "ok": false
    }
   ],
+  "canonicals": 0,
+  "dup_status": [],
   "findings": {
    "contradictions": 0,
    "duplicate_urls": 0,
@@ -1139,6 +1256,8 @@ export const SURFACES = [
     "ok": false
    }
   ],
+  "canonicals": 0,
+  "dup_status": [],
   "findings": {
    "contradictions": 0,
    "duplicate_urls": 0,
@@ -1165,12 +1284,12 @@ export const SURFACES = [
   "entity": "AgenTroMatic",
   "pages": 1,
   "words": 377,
-  "claims": 26,
+  "claims": 25,
   "types": {
    "entity": 0,
    "quantity": 2,
    "quote": 2,
-   "definition": 3,
+   "definition": 2,
    "comparison": 1,
    "question": 0,
    "credential": 0,
@@ -1190,8 +1309,8 @@ export const SURFACES = [
     "name": "Glossary / definitions",
     "type": "definition",
     "need": 3,
-    "have": 3,
-    "ok": true
+    "have": 2,
+    "ok": false
    },
    {
     "name": "FAQ page",
@@ -1222,6 +1341,8 @@ export const SURFACES = [
     "ok": false
    }
   ],
+  "canonicals": 0,
+  "dup_status": [],
   "findings": {
    "contradictions": 0,
    "duplicate_urls": 0,
@@ -1305,6 +1426,8 @@ export const SURFACES = [
     "ok": false
    }
   ],
+  "canonicals": 0,
+  "dup_status": [],
   "findings": {
    "contradictions": 0,
    "duplicate_urls": 0,
@@ -1320,78 +1443,6 @@ export const SURFACES = [
     "url": "https://webhost.systems/"
    }
   ]
- },
- {
-  "domain": "docs.ampersandboxdesign.com",
-  "entity": "Ampersand Box",
-  "pages": 1,
-  "words": 0,
-  "claims": 0,
-  "types": {
-   "entity": 0,
-   "quantity": 0,
-   "quote": 0,
-   "definition": 0,
-   "comparison": 0,
-   "question": 0,
-   "credential": 0,
-   "process": 0,
-   "attribute": 0
-  },
-  "blocked": [],
-  "forms": [
-   {
-    "name": "Statistics / data page",
-    "type": "quantity",
-    "need": 5,
-    "have": 0,
-    "ok": false
-   },
-   {
-    "name": "Glossary / definitions",
-    "type": "definition",
-    "need": 3,
-    "have": 0,
-    "ok": false
-   },
-   {
-    "name": "FAQ page",
-    "type": "question",
-    "need": 5,
-    "have": 0,
-    "ok": false
-   },
-   {
-    "name": "Comparison page",
-    "type": "comparison",
-    "need": 6,
-    "have": 0,
-    "ok": false
-   },
-   {
-    "name": "How-it-works explainer",
-    "type": "process",
-    "need": 1,
-    "have": 0,
-    "ok": false
-   },
-   {
-    "name": "Entity / about page",
-    "type": "credential",
-    "need": 3,
-    "have": 0,
-    "ok": false
-   }
-  ],
-  "findings": {
-   "contradictions": 0,
-   "duplicate_urls": 0,
-   "orphans": 0,
-   "unsourced": 0,
-   "spa": 1,
-   "no_schema": 1
-  },
-  "material": []
  },
  {
   "domain": "docs.graphonomous.com",
@@ -1455,6 +1506,8 @@ export const SURFACES = [
     "ok": false
    }
   ],
+  "canonicals": 1,
+  "dup_status": [],
   "findings": {
    "contradictions": 0,
    "duplicate_urls": 0,
@@ -1527,6 +1580,8 @@ export const SURFACES = [
     "ok": false
    }
   ],
+  "canonicals": 1,
+  "dup_status": [],
   "findings": {
    "contradictions": 0,
    "duplicate_urls": 0,
@@ -1599,6 +1654,8 @@ export const SURFACES = [
     "ok": false
    }
   ],
+  "canonicals": 0,
+  "dup_status": [],
   "findings": {
    "contradictions": 0,
    "duplicate_urls": 0,
@@ -1656,8 +1713,8 @@ export const EXPANSION = [
   "questions": 115,
   "counts": {
    "ready": 5,
-   "thin": 110,
-   "weak": 137,
+   "thin": 109,
+   "weak": 138,
    "none": 205
   },
   "ready": [

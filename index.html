@@ -30,7 +30,7 @@
   "url": "https://alkeyword.com/",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "macOS, Linux, Windows",
-  "softwareVersion": "0.5.0",
+  "softwareVersion": "0.6.0",
   "description": "A local-first evidence engine: crawls a domain into a typed claim graph, mines real queries, measures what AI search surfaces recover, and produces grounded research briefs. Refuses to generate below a material threshold.",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "author": { "@type": "Person", "name": "Travis Burandt" }
@@ -133,8 +133,8 @@
     <span class="tag">the live explorer</span>
     <h2 class="sec">Twenty real sites. Pick one.</h2>
     <p class="sub">This is not a mockup and it is not sample copy. It is stage-1 output from
-    an actual crawl of our own portfolio — <b id="totPages">71</b> pages,
-    <b id="totWords">73,943</b> words, <b id="totClaims">4,318</b> claims — rendered by the
+    an actual crawl of our own portfolio — <b id="totPages">100</b> pages,
+    <b id="totWords">77,859</b> words, <b id="totClaims">4,506</b> claims — rendered by the
     same numbers the terminal prints. Two more surfaces were crawled and dropped here because
     they returned nothing; one 404s and one does not resolve, which is itself a finding.</p>
 
@@ -363,6 +363,46 @@
   </div>
 </section>
 
+<!-- ============================== RETRACTION ============================== -->
+<section class="band">
+  <div class="wrap narrow">
+    <span class="tag">v0.6.0 · the tool caught itself</span>
+    <h2 class="sec">It published a gap that did not exist</h2>
+
+    <p>Three days ago this crawler reported that our three documentation hosts served one
+    document with <b>no canonical between them</b>, and filed the fix as a portfolio work
+    item: <i>pick one canonical host, 301 the others.</i></p>
+
+    <p>It had never parsed <code>&lt;link rel="canonical"&gt;</code>. The word appeared once
+    in the entire crawler, inside a docstring. All three hosts already declared
+    <code>&lt;link rel="canonical" href="https://docs.ampersandboxdesign.com/"&gt;</code>.
+    The work item was an artifact of a tool asserting the absence of something it had never
+    looked for.</p>
+
+    <blockquote>
+      <p>An unevidenced claim is not safe just because it happens to be true. Of the nine
+      within-host duplicate groups, all nine really were missing a canonical — the guess was
+      right every time it went unpublished, and wrong in the one case that became a work
+      item.</p>
+      <cite>Being right by luck is not being right, and it is not a reason to keep guessing.</cite>
+    </blockquote>
+
+    <p>What changed: canonical is now an <strong>observation</strong>. Each URL's declared
+    target is recorded, and a duplicate group reports <b>agree</b>, <b>disagree</b>,
+    <b>partial</b> or <b>absent</b>. Disagreement is the case worth having and the old
+    wording could not express it — two URLs each naming themselves as the original is a worse
+    problem than neither doing so.</p>
+
+    <p>The retraction is published in the same document that carried the claim, by name,
+    because a quiet correction is a second error. Three other faults were repaired in the
+    same release: claim anchors pointed at the page's last heading rather than the section
+    the claim came from, <code>robots.txt</code> was read case-sensitively so a lowercase
+    <code>user-agent: gptbot</code> blocking everything registered as unblocked, and the
+    configuration layer described limits the running code never read. Each has a regression
+    test that was watched failing first.</p>
+  </div>
+</section>
+
 <!-- ============================== SEEDS ============================== -->
 <section class="band alt">
   <div class="wrap">
@@ -445,7 +485,7 @@
 <!-- ============================== STATUS ============================== -->
 <section class="band" id="status">
   <div class="wrap">
-    <span class="tag ctr">v0.5.0</span>
+    <span class="tag ctr">v0.6.0</span>
     <h2 class="sec ctr">Where this actually is</h2>
     <p class="sub ctr">There is no testimonial wall on this page and no logo strip, because a
     tool that refuses to fabricate output cannot fabricate its own marketing. So here is the
@@ -455,8 +495,9 @@
       <div class="st">
         <span class="chip measured">measured</span>
         <b>Stage 1 — crawl and free findings</b>
-        <span>Run against 22 live surfaces. 20 returned pages; 4,318 claims and every
-        finding on this page came out of it. Costs nothing and needs no key.</span>
+        <span>Run against 22 live surfaces. 20 returned pages; 4,506 claims and every finding
+        on this page came out of it. Ten regression tests cover the four faults v0.5.0
+        shipped, each one watched failing before its repair.</span>
       </div>
       <div class="st">
         <span class="chip once">run once, for real</span>
@@ -490,19 +531,19 @@
     Claude Code session you already have.</p>
 
     <div class="dl">
-      <a href="dist/alkeyword-0.5.0.tar.gz">
-        <span class="name">alkeyword-0.5.0.tar.gz</span>
-        <span class="meta">42 KB · macOS / Linux</span>
+      <a href="dist/alkeyword-0.6.0.tar.gz">
+        <span class="name">alkeyword-0.6.0.tar.gz</span>
+        <span class="meta">48 KB · macOS / Linux</span>
       </a>
-      <a href="dist/alkeyword-0.5.0.zip">
-        <span class="name">alkeyword-0.5.0.zip</span>
-        <span class="meta">49 KB · Windows</span>
+      <a href="dist/alkeyword-0.6.0.zip">
+        <span class="name">alkeyword-0.6.0.zip</span>
+        <span class="meta">55 KB · Windows</span>
       </a>
     </div>
 
     <div class="term">
       <div class="term-bar"><span class="dots"><i></i><i></i><i></i></span><span>terminal</span></div>
-<pre>tar xzf alkeyword-0.5.0.tar.gz
+<pre>tar xzf alkeyword-0.6.0.tar.gz
 cd alkeyword
 ./install.sh
 
@@ -527,7 +568,7 @@ cd alkeyword
     <p>Bring a domain name. Get back what your own site already proves, matched to what people
     are actually asking — and an honest refusal where the material isn't there.</p>
     <div class="cta">
-      <a class="btn big" href="#download">Download v0.5.0</a>
+      <a class="btn big" href="#download">Download v0.6.0</a>
       <a class="ghost big" href="#explore">Explore the real runs</a>
     </div>
   </div>
@@ -549,7 +590,7 @@ cd alkeyword
     </div>
   </div>
   <div class="wrap fbot">
-    <span>v0.5.0 · early, and specific about which parts are.</span>
+    <span>v0.6.0 · early, and specific about which parts are.</span>
     <span>Every figure on this page regenerates from the download.</span>
   </div>
 </footer>

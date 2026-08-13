@@ -257,9 +257,10 @@ function renderEmpty(s) {
     HTTP 200, and <b>${s.words} words of extractable text</b>. The content is real; it sits
     in a JSON blob inside a <code>&lt;script&gt;</code> tag. Not blocked by
     <code>robots.txt</code> — just not in the HTML.</p>
-    <p style="margin-top:10px">Across the three documentation hosts in this list that is
-    <b>458,382 words</b> and <b>229 documents</b> that no static extractor can read, against
-    73,943 the rest of the portfolio makes plain. What that costs you depends on who is
+    <p style="margin-top:10px">Two of the three documentation hosts in this list still read
+    like that. The third, <code>docs.ampersandboxdesign.com</code>, went from this exact state
+    to <b>30 pages and 218 claims</b> between two crawls three days apart — so this is a
+    fixable condition, not a permanent one. What it costs you meanwhile depends on who is
     reading, and those are three separate questions the tool keeps separate:</p>
     <p style="margin-top:10px">
       <b>Measured:</b> invisible to Alkeyword's static extractor. ·
