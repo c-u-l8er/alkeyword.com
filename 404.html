@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Not found — Alkeyword</title>
+<!-- This page exists to make a missing URL return 404 instead of 200.
+
+     Before it, every unmatched path on this domain served the full homepage with
+     a 200 — /nope, /dist/anything.zip, all of it. That is a soft 404, and it is
+     the duplicate-content problem this tool audits for (G10) applied to an
+     unbounded number of URLs: every wrong link anyone ever publishes becomes
+     another URL serving the homepage, each a competing candidate to cite.
+
+     Found by pointing alkeyword at alkeyword.com. -->
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<nav id="nav">
+  <a class="brand" href="/">
+    <span class="gl">🜛</span><span class="nm">alkeyword</span>
+  </a>
+  <a class="btn" href="/">Home</a>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="glyph">🜛</div>
+    <div class="pills"><span class="pill">404</span></div>
+    <h1>Nothing here.</h1>
+    <p class="lede">This URL does not exist, and now it says so with a status code instead of
+    quietly handing you the homepage. The previous behaviour returned <code>200</code> for
+    every wrong path — which is the duplicate-URL problem this tool reports on other people's
+    sites, so it seemed worth not having on this one.</p>
+    <div class="cta">
+      <a class="btn big" href="/">Back to the start</a>
+      <a class="ghost big" href="/#download">Download</a>
+    </div>
+  </div>
+</header>
+
+</body>
+</html>
