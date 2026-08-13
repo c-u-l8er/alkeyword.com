@@ -4,280 +4,457 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Alkeyword — transmute a domain into AI-search visibility</title>
-<meta name="description" content="Bring a domain name. Alkeyword crawls the site, measures what AI engines actually say about it, and transmutes the site's own claims into content that closes the gap. Runs on your Claude subscription. No API keys.">
-<style>
-  :root{
-    --bg:#0d0f14; --bg2:#12151c; --line:#232833;
-    --ink:#e8e6e1; --dim:#9aa0ab; --faint:#6c7280;
-    --gold:#d9a441; --gold-dim:#8a6a2c; --verd:#4a9e8f; --rust:#c15f3c;
-    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
-    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
-       font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:760px;margin:0 auto;padding:0 24px}
-  a{color:var(--gold)}
-  h1,h2,h3{line-height:1.2;letter-spacing:-.02em}
-  code,kbd{font-family:var(--mono);font-size:.87em}
+<!-- Kept near 155 characters, which is roughly what a search result renders
+     before it truncates. -->
+<meta name="description" content="Bring a domain name. Alkeyword crawls the site, measures what AI engines say about it, and turns the site's own claims into research briefs. No API keys.">
 
-  /* hero */
-  header{border-bottom:1px solid var(--line);padding:88px 0 72px;
-         background:radial-gradient(120% 70% at 50% -10%,rgba(217,164,65,.10),transparent 60%)}
-  .glyph{font-size:44px;color:var(--gold);line-height:1;margin-bottom:26px;
-         font-family:var(--mono);opacity:.9}
-  h1{font-size:clamp(2.1rem,6vw,3.2rem);margin:0 0 6px;font-weight:600}
-  .sub{color:var(--gold);font-family:var(--mono);font-size:.9rem;letter-spacing:.14em;
-       text-transform:uppercase;margin-bottom:26px}
-  .lede{font-size:1.2rem;color:var(--dim);max-width:56ch;margin:0 0 34px}
-  .lede strong{color:var(--ink);font-weight:600}
+<meta property="og:type" content="website">
+<meta property="og:title" content="Alkeyword — transmute a domain into AI-search visibility">
+<meta property="og:description" content="Research briefs built from your own claims, never invented. Below the material threshold it refuses to generate and tells you what is missing. Runs on your Claude subscription.">
 
-  .cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-  .btn{display:inline-block;padding:12px 22px;border-radius:7px;text-decoration:none;
-       font-weight:600;font-size:.96rem;border:1px solid transparent}
-  .btn-primary{background:var(--gold);color:#14161b}
-  .btn-primary:hover{background:#e8b95a}
-  .btn-ghost{border-color:var(--line);color:var(--ink)}
-  .btn-ghost:hover{border-color:var(--gold-dim)}
-  .note{font-size:.86rem;color:var(--faint);margin-top:14px}
-
-  section{padding:60px 0;border-bottom:1px solid var(--line)}
-  h2{font-size:1.5rem;margin:0 0 8px}
-  .kicker{font-family:var(--mono);font-size:.76rem;letter-spacing:.16em;
-          text-transform:uppercase;color:var(--gold-dim);margin-bottom:12px}
-  p{margin:0 0 18px;color:var(--dim)}
-  p strong,li strong{color:var(--ink);font-weight:600}
-
-  /* transmute vs fabricate */
-  .split{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:26px 0 8px}
-  .card{border:1px solid var(--line);border-radius:9px;padding:20px;background:var(--bg2)}
-  .card h3{font-size:.82rem;font-family:var(--mono);letter-spacing:.12em;
-           text-transform:uppercase;margin:0 0 10px}
-  .card p{font-size:.95rem;margin:0}
-  .bad h3{color:var(--rust)} .good h3{color:var(--verd)}
-
-  ul{margin:0 0 18px;padding-left:20px;color:var(--dim)}
-  li{margin-bottom:9px}
-
-  /* terminal */
-  .term{border:1px solid var(--line);border-radius:9px;background:#080a0e;
-        overflow:hidden;margin:24px 0}
-  .term-bar{padding:9px 14px;border-bottom:1px solid var(--line);font-family:var(--mono);
-            font-size:.74rem;color:var(--faint);letter-spacing:.06em}
-  .term pre{margin:0;padding:18px;overflow-x:auto;font-family:var(--mono);
-            font-size:.79rem;line-height:1.75;color:#c9cdd6}
-  .g{color:var(--gold)} .r{color:var(--rust)} .v{color:var(--verd)} .d{color:var(--faint)}
-
-  blockquote{margin:22px 0;padding:16px 20px;border-left:3px solid var(--gold);
-             background:var(--bg2);border-radius:0 8px 8px 0;color:var(--ink);
-             font-size:1.02rem}
-  blockquote p{color:var(--ink);margin:0}
-  blockquote cite{display:block;margin-top:10px;font-style:normal;font-size:.83rem;
-                  color:var(--faint);font-family:var(--mono)}
-
-  table{width:100%;border-collapse:collapse;font-size:.93rem;margin:18px 0}
-  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);
-        vertical-align:top}
-  th{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
-     color:var(--faint);font-weight:500}
-  td{color:var(--dim)} td:first-child{color:var(--ink)}
-  .scroll{overflow-x:auto}
-
-  .dl{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0 10px}
-  .dl a{display:block;border:1px solid var(--line);border-radius:9px;padding:16px 18px;
-        text-decoration:none;background:var(--bg2)}
-  .dl a:hover{border-color:var(--gold-dim)}
-  .dl .name{color:var(--ink);font-weight:600;display:block}
-  .dl .meta{color:var(--faint);font-size:.8rem;font-family:var(--mono)}
-
-  footer{padding:44px 0 72px;color:var(--faint);font-size:.86rem}
-  footer p{color:var(--faint)}
-
-  @media(max-width:640px){
-    .split,.dl{grid-template-columns:1fr}
-    body{font-size:16px}
-    header{padding:60px 0 52px}
-  }
-  @media(prefers-color-scheme:light){
-    :root{--bg:#fbfaf7;--bg2:#f3f1ec;--line:#e0dcd2;--ink:#1a1c22;--dim:#4e5561;
-          --faint:#82888f;--gold:#9a6f16;--gold-dim:#b89a5c}
-    .term{background:#14161b}
-    .term pre{color:#c9cdd6}
-    .btn-primary{color:#fff}
-  }
-  :root[data-theme="dark"]{--bg:#0d0f14;--bg2:#12151c;--line:#232833;--ink:#e8e6e1;
-    --dim:#9aa0ab;--faint:#6c7280;--gold:#d9a441;--gold-dim:#8a6a2c}
-  :root[data-theme="light"]{--bg:#fbfaf7;--bg2:#f3f1ec;--line:#e0dcd2;--ink:#1a1c22;
-    --dim:#4e5561;--faint:#82888f;--gold:#9a6f16;--gold-dim:#b89a5c}
-</style>
+<!-- 🜛 — the alchemical sigil the name comes from. Inline SVG so the page makes
+     no external request; the install section promises the tool phones nowhere. -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='25' x='4' font-size='24' fill='%23d9a441'>%F0%9F%9C%9B</text></svg>">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<header>
+<a class="skip" href="#explore">Skip to the live explorer</a>
+
+<nav id="nav">
+  <a class="brand" href="#top">
+    <span class="gl">🜛</span><span class="nm">alkeyword</span>
+  </a>
+  <div class="navlinks">
+    <a href="#explore">Explore real runs</a>
+    <a href="#refusal">The refusal rule</a>
+    <a href="#pipeline">Pipeline</a>
+    <a href="#cost">Cost</a>
+    <a href="#status">Where this is</a>
+  </div>
+  <a class="btn" href="#download">Download</a>
+</nav>
+
+<!-- ============================== HERO ============================== -->
+<header class="hero" id="top">
   <div class="wrap">
     <div class="glyph">🜛</div>
-    <div class="sub">al&#8202;·&#8202;keyword</div>
+    <div class="pills">
+      <span class="pill">stdlib python</span>
+      <span class="pill">your claude subscription</span>
+      <span class="pill">no api keys</span>
+    </div>
+
     <h1>Bring a domain name.</h1>
+
     <p class="lede">Nothing else. Alkeyword reads the site, mines the questions people
     actually ask, measures what AI engines say back — and hands you
     <strong>research briefs built from your own claims</strong>. You write. It does
     everything before that.</p>
+
     <div class="cta">
-      <a class="btn btn-primary" href="#download">Download</a>
-      <a class="btn btn-ghost" href="#how">How it works</a>
+      <a class="btn big" href="#download">Download</a>
+      <a class="ghost big" href="#explore">Explore 20 real runs</a>
     </div>
-    <p class="note">Runs on your Claude subscription. No API keys. The crawl is plain
-    Python and costs nothing.</p>
+
+    <p class="fineprint">Runs on your machine, on your Claude subscription. The crawl is
+    plain Python and costs nothing. Every panel on this page is real output — you can
+    regenerate all of it from the download.</p>
+
+    <!-- The hero report types itself in from real stage-1 output. Content comes
+         from data.js, so it cannot drift from what the crawler actually printed. -->
+    <div class="term" id="heroterm" style="margin-top:38px">
+      <div class="term-bar">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span id="heroCmd">/alkeyword opensentience.org</span>
+      </div>
+      <pre id="heroOut"></pre>
+    </div>
+    <p class="caption">Stage 1 output, verbatim, from a real crawl of a live site.
+    Deterministic Python — no model was called to produce any of it.</p>
   </div>
 </header>
 
-<section>
+<!-- ============================== PREMISE ============================== -->
+<section class="band">
   <div class="wrap">
-    <div class="kicker">the premise</div>
-    <h2>Transmute, never fabricate</h2>
-    <p>Alchemy transmutes existing material. It doesn't conjure from nothing — and neither
-    does this.</p>
+    <span class="tag">the premise</span>
+    <h2 class="sec">Transmute, never fabricate</h2>
+    <p class="sub">Alchemy transmutes existing material. It does not conjure from nothing —
+    and neither does this. That single constraint is what the whole tool is built around,
+    and it is why this page can be made of real output instead of screenshots of a demo.</p>
+
     <div class="split">
       <div class="card bad">
         <h3>Every autoblog tool</h3>
-        <p>Guesses your niche and writes net-new articles about it. That's why the output is
-        generic, why it gets facts about your business wrong, and why it trips Google's
+        <p>Guesses your niche and writes net-new articles about it. That is why the output
+        is generic, why it gets facts about your business wrong, and why it trips Google's
         scaled-content-abuse detection.</p>
       </div>
       <div class="card good">
         <h3>Alkeyword</h3>
-        <p>Does the research and stops. Every number, price, process and quote your site already
-        publishes, matched to the questions people really ask — handed to you as a brief.
-        Nothing is invented, because nothing is written.</p>
+        <p>Does the research and stops. Every number, price, process and quote your site
+        already publishes, matched to the questions people really ask — handed to you as a
+        brief. Nothing is invented, because nothing is written.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section id="how">
+<!-- ============================== EXPLORER ============================== -->
+<section class="band alt" id="explore">
   <div class="wrap">
-    <div class="kicker">what it does</div>
-    <h2>Crawl → expand → probe → brief</h2>
-    <p>Research without a target is just a dashboard, and dashboards are what people churn out
-    of. Every brief carries the raw material with it, so writing is assembly — not another
-    research job handed back to you.</p>
-    <div class="term">
-      <div class="term-bar">/alkeyword opensentience.org</div>
-<pre><span class="d">crawling… 16 pages, 12,322 words</span>
+    <span class="tag">the live explorer</span>
+    <h2 class="sec">Twenty real sites. Pick one.</h2>
+    <p class="sub">This is not a mockup and it is not sample copy. It is stage-1 output from
+    an actual crawl of our own portfolio — <b id="totPages">71</b> pages,
+    <b id="totWords">73,943</b> words, <b id="totClaims">4,318</b> claims — rendered by the
+    same numbers the terminal prints. Two more surfaces were crawled and dropped here because
+    they returned nothing; one 404s and one does not resolve, which is itself a finding.</p>
 
-CLAIM GRAPH
-  quantity     32  <span class="g">████████████████████</span> <span class="d">← strongest citation lever</span>
-  quote        25  <span class="g">████████████████</span>
-  definition   71  <span class="g">██████████████████████</span>
-  comparison   18  <span class="g">███████████</span>
-  question      0
-  process       0
+    <div class="explorer">
+      <aside class="rail">
+        <div class="railhead">surface · claims</div>
+        <div id="rail"></div>
+      </aside>
 
-MINTABLE
-  <span class="v">✓</span> Statistics page      32/5 quantity claims
-  <span class="v">✓</span> Glossary             71/3 definition claims
-  <span class="r">✗</span> FAQ page              0/5 <span class="d">— refused, no material</span>
-  <span class="r">✗</span> How-it-works          0/1 <span class="d">— refused, no material</span>
+      <div class="panel">
+        <div class="statstrip">
+          <div class="stat"><span class="k">entity</span><span class="v" id="sEntity">—</span></div>
+          <div class="stat"><span class="k">pages</span><span class="v" id="sPages">—</span></div>
+          <div class="stat"><span class="k">words</span><span class="v" id="sWords">—</span></div>
+          <div class="stat"><span class="k">claims</span><span class="v" id="sClaims">—</span></div>
+        </div>
 
-FREE FINDINGS <span class="d">(no model calls spent)</span>
-  <span class="v">✓</span> robots.txt does not block AI crawlers
-  <span class="r">⚠</span> 7 duplicate-URL groups   <span class="d">/x and /x.html, no canonical</span>
-  <span class="r">⚠</span> 9 orphaned value pages
-  <span class="r">⚠</span> 0 of 16 pages have schema markup</pre>
+        <div class="verdictbox no" id="emptyNote" hidden></div>
+
+        <div class="graph">
+          <div class="blockhead">claim graph by type</div>
+          <div id="graph"></div>
+          <p class="caption" style="margin-top:10px">Rows are ordered by measured citation
+          value, not by count — <code>quantity</code> is the strongest lever whether or not
+          it is the largest bar. <span id="capNote" hidden>The dotted rule is 38, where the
+          terminal stops drawing its ASCII bar; this chart keeps going, because a bar that
+          does not encode its number is a legend with no chart under it.</span></p>
+        </div>
+
+        <div class="verdicts">
+          <div class="blockhead">material sufficiency — what could be minted</div>
+          <div id="verdicts"></div>
+        </div>
+
+        <div>
+          <div class="blockhead">free findings — no engine calls spent</div>
+          <div class="finds" id="finds"></div>
+        </div>
+
+        <div class="material">
+          <div class="blockhead">raw material — real claims, verbatim</div>
+          <div id="material"></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="caption">Regenerate every number above with
+    <code>python3 prototype/runs/site_dataset.py</code>. It reads the crawl JSON and refuses
+    to build if <code>crawl.py</code>'s thresholds have drifted from the ones this page
+    publishes.</p>
+  </div>
+</section>
+
+<!-- ============================== REFUSAL ============================== -->
+<section class="band" id="refusal">
+  <div class="wrap">
+    <span class="tag">the load-bearing rule</span>
+    <h2 class="sec">It will tell you it can't.</h2>
+    <p class="sub">Every form has a material threshold. Below it, the tool refuses to
+    generate and says exactly what is missing — and the refusal is not a warning you can
+    click past, it is the answer. Drag the slider and watch the verdict flip at the
+    threshold. These are the real numbers from <code>crawl.py</code> §4.2, not
+    illustrations of them.</p>
+
+    <div class="refuse">
+      <div class="formpick" id="formpick"></div>
+
+      <div class="slrow">
+        <span class="sllab">Claims of this type your site actually has</span>
+        <output id="clOut">0</output>
+      </div>
+      <input id="clSlider" type="range" min="0" max="12" step="1" value="2"
+             aria-label="Claims your site has">
+
+      <div class="verdictbox no" id="verdictBox">
+        <div class="vhead" id="vbHead">refused</div>
+        <p id="vbBody"></p>
+      </div>
+    </div>
+
+    <p class="sub" style="margin-top:30px">This is deliberate, and relaxing it under revenue
+    pressure is the one change that would turn this into the thing it was built against.
+    Google's March 2026 core update named <b>scaled content abuse</b> specifically — sites
+    publishing bulk AI pages without editorial oversight saw 50–80% traffic drops, with
+    manual actions issued. Five values are clamped in <code>config.py</code> and a sixth
+    floors every form's requirements — three of them are minimums you cannot lower, one is a
+    ceiling on pieces per cycle, and human review is pinned on. A safety constraint you can
+    silently delete is not one.</p>
+  </div>
+</section>
+
+<!-- ============================== PIPELINE ============================== -->
+<section class="band alt" id="pipeline">
+  <div class="wrap">
+    <span class="tag">what it does</span>
+    <h2 class="sec">Crawl → expand → probe → brief</h2>
+    <p class="sub">Research without a target is just a dashboard, and dashboards are what
+    people churn out of. Every brief carries the raw material with it, so writing is
+    assembly — not another research job handed back to you.</p>
+
+    <div class="tabs" id="tabs">
+      <button data-tab="crawl" class="on"><span class="step">1</span>Crawl</button>
+      <button data-tab="expand"><span class="step">2a</span>Expand</button>
+      <button data-tab="probe"><span class="step">2b</span>Probe</button>
+      <button data-tab="brief"><span class="step">4</span>Brief</button>
+    </div>
+
+    <div id="tabpanes">
+
+      <!-- ---------------- crawl ---------------- -->
+      <div class="tabpane" data-pane="crawl">
+        <p class="tabnote"><b>Deterministic, free, and where everything starts.</b> Fetches
+        the site with the standard library only — there is nothing to <code>pip install</code>
+        — and builds a typed claim graph plus six findings that cost no model calls at all.
+        If <code>robots.txt</code> blocks AI crawlers it stops here and says so, because
+        nothing downstream matters until that is fixed.</p>
+        <div class="term">
+          <div class="term-bar"><span class="dots"><i></i><i></i><i></i></span>
+            <span>python3 crawl.py opensentience.org --json crawl.json</span></div>
+          <pre id="paneCrawl"></pre>
+        </div>
+      </div>
+
+      <!-- ---------------- expand ---------------- -->
+      <div class="tabpane" data-pane="expand" hidden>
+        <p class="tabnote"><b>Real queries, free, no API key</b> — mined from Google and
+        DuckDuckGo autocomplete, which is what people actually typed. Then the column no
+        keyword tool has: each query cross-referenced against the site's own claim graph to
+        answer <i>can this site answer it today?</i> A keyword list without that column is a
+        to-do list someone else still has to research.</p>
+
+        <div class="statstrip" style="margin-bottom:18px">
+          <div class="stat"><span class="k">queries mined</span><span class="v" id="eTotal">—</span></div>
+          <div class="stat"><span class="k">✓ ready</span><span class="v" id="eReady">—</span></div>
+          <div class="stat"><span class="k">~ thin</span><span class="v" id="eThin">—</span></div>
+          <div class="stat"><span class="k">✗ none</span><span class="v" id="eNone">—</span></div>
+        </div>
+
+        <div class="scroll" style="border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:4px 14px 8px">
+          <table class="qtable" id="qtable"></table>
+        </div>
+        <p class="caption">A real run: six seeds, 457 queries, verdicts computed against the
+        claim graph above. The <b>demand you don't serve</b> rows are not assignments — they
+        are a strategy question for a human to answer.</p>
+      </div>
+
+      <!-- ---------------- probe ---------------- -->
+      <div class="tabpane" data-pane="probe" hidden>
+        <p class="tabnote"><b>Ask the engine what it actually says about you.</b> Questions
+        are generated from the claim graph — brand, category, and each high-value claim
+        inverted into the question it answers — then asked <i>N</i> times, because engines are
+        non-deterministic and a single sample is not a rate.</p>
+        <div class="term">
+          <div class="term-bar"><span class="dots"><i></i><i></i><i></i></span>
+            <span>python3 probe.py crawl.json --run --runs 3</span></div>
+          <pre id="paneProbe"></pre>
+        </div>
+        <p class="caption">A real run, 2026-08-10: 9 questions × 3 runs = 27 calls, $0.1424
+        total, <code>perplexity/sonar</code>. Cached responses are on disk in the repo.</p>
+      </div>
+
+      <!-- ---------------- brief ---------------- -->
+      <div class="tabpane" data-pane="brief" hidden>
+        <p class="tabnote"><b>The product is the research. The human writes.</b> Over 90% of
+        pages cited in AI search already contain AI-generated text, so more of it was never
+        the differentiator — the research behind it is, and human-written content earns about
+        5.44× the traffic and holds it. Briefs cluster queries by the claims they share, pick
+        the highest-value form the material actually supports, and attach the material
+        verbatim with its source URL.</p>
+        <div class="term">
+          <div class="term-bar"><span class="dots"><i></i><i></i><i></i></span>
+            <span>python3 brief.py crawl.json exp.json --out briefs.md</span></div>
+          <pre id="paneBrief"></pre>
+        </div>
+        <p class="caption">If you want a draft, ask for one brief at a time. It is never the
+        default and there is no bulk mode.</p>
+      </div>
+
     </div>
   </div>
 </section>
 
-<section>
-  <div class="wrap">
-    <div class="kicker">a real finding</div>
-    <h2>The kind of thing only this finds</h2>
-    <p>On a live site, the crawl noticed one number stated prominently four times and the
-    correct number stated once, buried. It predicted the engine would learn the wrong one.
-    Then it asked:</p>
+<!-- ============================== THE FINDING ============================== -->
+<section class="band">
+  <div class="wrap narrow">
+    <span class="tag">a real finding, both halves measured</span>
+    <h2 class="sec">Predicted for free. Confirmed for $0.015.</h2>
+    <p>The crawl noticed one number stated prominently and a different, correct number stated
+    once and buried. It did not need an engine to see that — it is a positioning fact, visible
+    in the claim graph. Both of these are real claims from the same site, pulled straight out
+    of the crawl by the same code that built the explorer above:</p>
+
+    <div id="lawClaims"></div>
+
+    <p>The second one looks like scraped noise, and that is the finding rather than a flaw in
+    the excerpt. It is the site's own navigation — <b>“The 103 laws”</b> as a link label, on
+    every page. The correct figure appears once, in a sentence, on one page. Four prominent
+    placements against one buried one; an engine weighs position, not correctness.</p>
+
+    <p>From signal dominance alone, stage 1 predicted the engine would learn the wrong total.
+    Stage 2 asked, three times:</p>
+
     <blockquote>
-      <p>“OpenSentience's homepage says the box-and-box kernel has <strong>103 laws ×
-      2,000 trials</strong>.”</p>
-      <cite>perplexity/sonar — 3 of 3 runs. The authoritative number is 116.</cite>
+      <p>“OpenSentience's homepage says the <strong>box-and-box kernel</strong> has
+      <strong>103 laws × 2,000 trials</strong>.”</p>
+      <cite>perplexity/sonar — 3 of 3 runs, citing opensentience.org. The authoritative
+      number is 116.</cite>
     </blockquote>
+
     <p>A true fact, positioned so weakly the model learned the wrong one. No keyword tool
-    surfaces that, because it isn't a keyword problem — it's a <strong>signal-dominance</strong>
-    problem, and you can only see it by comparing what a site says against what engines
-    repeat back.</p>
+    surfaces that, because it is not a keyword problem — it is a
+    <strong>signal-dominance</strong> problem, and you can only see it by comparing what a
+    site says against what engines repeat back.</p>
+
+    <p>The same run turned up something a single-site crawl structurally cannot see: a second
+    property, under the same owner, told the engine <b>15 laws × 1,000 trials</b>. Three
+    numbers, three sources, and the engine returns whichever page it lands on.</p>
   </div>
 </section>
 
-<section>
+<!-- ============================== SEEDS ============================== -->
+<section class="band alt">
   <div class="wrap">
-    <div class="kicker">the keyword research</div>
-    <h2>Every query gets the column that matters</h2>
-    <p>Real queries from Google and DuckDuckGo autocomplete — what people actually typed, free,
-    no API key. Then the part no keyword tool does: each one cross-referenced against your own
-    claims to answer <strong>can this site answer it today?</strong></p>
-    <div class="term">
-      <div class="term-bar">material verdict</div>
-<pre>  <span class="v">✓ ready</span>   site already has ≥5 strong claims   <span class="d">→ write it now</span>
-  <span class="g">~ thin</span>    has 2-4                            <span class="d">→ here's what to gather</span>
-  <span class="d">· weak    incidental overlap only            → probably not yours</span>
-  <span class="r">✗ none</span>    nothing on your site touches it    <span class="d">→ strategy question</span>
+    <span class="tag">the part that is honest about its own limits</span>
+    <h2 class="sec">The extractor has a ceiling, and the tool says so</h2>
+    <p class="sub">The Python claim extractor is heuristic and has one root failure: it does
+    not resolve subjects. So it over-fires on <code>definition</code>, dumps most claims into
+    <code>attribute</code>, and cannot trust its own contradiction detection. That is not a
+    footnote — it changes the output enough that the tool tells you to supply the seeds
+    yourself. Measured on a live site, identical code and identical claim graph, only the
+    seeds differing:</p>
 
-<span class="d">? when continual learning moves to memory</span>
-    <span class="v">5 strong claims</span> · definition, quote, quantity
-    ← opensentience.org/resource-arithmetic</pre>
+    <div class="seedbox">
+      <div class="formpick" id="seedpick">
+        <button data-seed="auto" class="on">auto-seeded from the extractor</button>
+        <button data-seed="resolved">seeds resolved properly</button>
+      </div>
+      <div class="seedcols">
+        <div class="seedcol ready"><span class="lab">✓ ready</span><span class="num" id="sdReady">0</span></div>
+        <div class="seedcol thin"><span class="lab">~ thin</span><span class="num" id="sdThin">3</span></div>
+        <div class="seedcol none"><span class="lab">✗ none</span><span class="num" id="sdNone">312</span></div>
+      </div>
+      <p class="caption" id="seedNote"></p>
     </div>
-    <p>A keyword list without that column is a to-do list someone else has to research.
-    With it, the ready ones are assignments you can start on immediately.</p>
-    <p>It also reports what it <em>can't</em> find: if every suggestion drifts off your brand
-    name, nobody is searching it — a positioning finding, not a content one.</p>
   </div>
 </section>
 
-<section>
+<!-- ============================== GAPS ============================== -->
+<section class="band">
   <div class="wrap">
-    <div class="kicker">the constraint</div>
-    <h2>It will tell you it can't</h2>
-    <blockquote>
-      <p>You have 3 claims about X. A comparison page needs at least 8, including 2
-      quantities. Here's what's missing.</p>
-    </blockquote>
-    <p>This is deliberate, and it's the whole point. Google's March 2026 core update named
-    <strong>scaled content abuse</strong> specifically — sites publishing bulk AI pages without
-    editorial oversight saw 50–80% traffic drops, with manual actions now being issued.</p>
-    <p>Tools that promise 30 articles a month regardless of whether there's anything real to
-    say are selling you into that. Alkeyword hands the writing to you — and over 90% of pages
-    cited in AI search already contain AI-generated text, so more of it was never the
-    differentiator. The research is. Human-written content earns about 5.44× the traffic and
-    holds it.</p>
-    <p>If you do want a draft, ask for one brief at a time. It's never the default and there's
-    no bulk mode.</p>
+    <span class="tag">what it looks for</span>
+    <h2 class="sec">Ten gap types, ranked by what fixing them is worth</h2>
+    <p class="sub">Ranked by <code>reach × winnability × material_sufficiency ÷ effort</code>.
+    Three of them need no generation at all — they are link and markup fixes that cost
+    nothing and are found for free.</p>
+    <div class="gaps">
+      <div class="gap"><span class="id">G1</span><b>Dark fact</b><span>The site states it; the engine never surfaces it. Mint a page where it is the headline answer.</span></div>
+      <div class="gap urgent"><span class="id">G2</span><b>Wrong fact</b><span>The engine asserts something the site contradicts. Highest urgency — but check the site's own dates first, because model staleness is not the same as an error.</span></div>
+      <div class="gap"><span class="id">G3</span><b>Ceded question</b><span>A competitor is cited, you have the material, and no page exists. The primary generation trigger.</span></div>
+      <div class="gap"><span class="id">G4</span><b>Unsupported claim</b><span>A claim with no number and no source behind it. Strengthen it with the site's own figures.</span></div>
+      <div class="gap"><span class="id">G5</span><b>Missing form</b><span>Material exists for a high-citation page type that was never built.</span></div>
+      <div class="gap urgent"><span class="id">G6</span><b>Self-contradiction</b><span>Two claims on the site conflict. Resolve it before generating anything at all.</span></div>
+      <div class="gap"><span class="id">G7</span><b>Orphan</b><span>A valuable page with almost nothing linking to it. Internal linking — no generation needed.</span></div>
+      <div class="gap"><span class="id">G8</span><b>Thin entity</b><span>No schema, no author, no about page. Nearly free to fix, and portfolio-wide.</span></div>
+      <div class="gap urgent"><span class="id">G9</span><b>Blocked</b><span><code>robots.txt</code> blocks AI crawlers. Nothing downstream matters until this is cleared.</span></div>
+      <div class="gap"><span class="id">G10</span><b>Duplicate URLs</b><span>The same content at more than one URL with no canonical. Found by the crawl, added to the spec because live input surfaced it.</span></div>
+    </div>
   </div>
 </section>
 
-<section>
+<!-- ============================== COST ============================== -->
+<section class="band alt" id="cost">
   <div class="wrap">
-    <div class="kicker">what it costs</div>
-    <h2>Your subscription, not a meter</h2>
+    <span class="tag">what it costs</span>
+    <h2 class="sec">Your subscription, not a meter</h2>
     <div class="scroll">
-    <table>
-      <tr><th>Stage</th><th>Runs on</th><th>Cost</th></tr>
-      <tr><td>Crawl, claim graph, free findings</td><td>Your machine, plain Python</td><td>Nothing</td></tr>
-      <tr><td>Extraction, probing, generation</td><td>Your Claude subscription</td><td>Subscription usage</td></tr>
-    </table>
+      <table class="plain">
+        <tr><th>Stage</th><th>Runs on</th><th>Cost</th></tr>
+        <tr><td>Crawl, claim graph, free findings</td><td>Your machine, plain Python</td><td>Nothing</td></tr>
+        <tr><td>Keyword and question expansion</td><td>Google + DuckDuckGo autocomplete</td><td>Nothing, no key</td></tr>
+        <tr><td>Extraction, probing, generation</td><td>Your Claude subscription</td><td>Subscription usage</td></tr>
+        <tr><td>Multi-engine probing (optional)</td><td>Your own API keys</td><td>Real per-probe cost, quoted first</td></tr>
+      </table>
     </div>
-    <p>No API keys to paste, no per-token bill. The parts that are expensive to compute are
-    deterministic code; the model is used only where judgment is actually needed.</p>
-    <p><strong>One caveat, stated plainly.</strong> Probing covers the web-search surface your
-    Claude session reaches — that's <strong>one engine</strong>. Cross-engine citation overlap
-    is only about 11%, so it implies nothing about ChatGPT, Perplexity, or Google AI Overviews.
-    Multi-engine coverage needs your own API keys and real per-probe cost. Alkeyword tells you
-    that tradeoff rather than quietly spending or quietly skipping.</p>
+    <p class="sub" style="margin-top:20px">No keys to paste for the default path, no
+    per-token bill. The parts that are expensive to compute are deterministic code; the model
+    is used only where judgment is actually needed.</p>
+
+    <blockquote>
+      <p><strong>One caveat, stated plainly.</strong> Probing through your Claude session
+      covers the web-search surface it reaches — that is <strong>one engine</strong>.
+      Cross-engine citation overlap is only about 11%, so it implies nothing about ChatGPT,
+      Perplexity or Google AI Overviews.</p>
+      <cite>Engines are never blended into one score. Rates are reported per engine, or not
+      reported.</cite>
+    </blockquote>
   </div>
 </section>
 
-<section id="download">
+<!-- ============================== STATUS ============================== -->
+<section class="band" id="status">
   <div class="wrap">
-    <div class="kicker">install</div>
-    <h2>Download</h2>
+    <span class="tag ctr">v0.5.0</span>
+    <h2 class="sec ctr">Where this actually is</h2>
+    <p class="sub ctr">There is no testimonial wall on this page and no logo strip, because a
+    tool that refuses to fabricate output cannot fabricate its own marketing. So here is the
+    honest state, in the same three categories the tool would use.</p>
+
+    <div class="statusrow">
+      <div class="st">
+        <span class="chip measured">measured</span>
+        <b>Stage 1 — crawl and free findings</b>
+        <span>Run against 22 live surfaces. 20 returned pages; 4,318 claims and every
+        finding on this page came out of it. Costs nothing and needs no key.</span>
+      </div>
+      <div class="st">
+        <span class="chip once">run once, for real</span>
+        <b>Stages 2–4 — expand, probe, brief</b>
+        <span>Expansion mined 457 real queries. The probe was a real paid run: 27 calls,
+        $0.1424, one engine. Enough to confirm the thesis end to end; not enough to call any
+        of it a rate across engines.</span>
+      </div>
+      <div class="st">
+        <span class="chip untested">not yet</span>
+        <b>Stage 5 — calibration</b>
+        <span>Turning form values into measured priors needs a published brief with probes on
+        both sides of the publication date. Nothing has been published yet, so calibrate.py
+        correctly reports nothing rather than inventing a trend.</span>
+      </div>
+    </div>
+
+    <p class="caption ctr" style="margin-top:22px">The known ceiling is named above and in the
+    skill file that ships with it: the heuristic extractor cannot resolve subjects, and that
+    single fault is the root cause of all four of its failure modes.</p>
+  </div>
+</section>
+
+<!-- ============================== DOWNLOAD ============================== -->
+<section class="band alt" id="download">
+  <div class="wrap">
+    <span class="tag">install</span>
+    <h2 class="sec">Download</h2>
+    <p class="sub">A Claude Code skill plus eight Python files. No package manager, no build
+    step, no lockfile, nothing to <code>pip install</code> — the standard library and a
+    Claude Code session you already have.</p>
+
     <div class="dl">
       <a href="dist/alkeyword-0.5.0.tar.gz">
         <span class="name">alkeyword-0.5.0.tar.gz</span>
@@ -288,8 +465,9 @@ FREE FINDINGS <span class="d">(no model calls spent)</span>
         <span class="meta">49 KB · Windows</span>
       </a>
     </div>
+
     <div class="term">
-      <div class="term-bar">terminal</div>
+      <div class="term-bar"><span class="dots"><i></i><i></i><i></i></span><span>terminal</span></div>
 <pre>tar xzf alkeyword-0.5.0.tar.gz
 cd alkeyword
 ./install.sh
@@ -297,20 +475,48 @@ cd alkeyword
 <span class="d"># then, in a new Claude Code session:</span>
 <span class="g">/alkeyword</span> yourdomain.com</pre>
     </div>
-    <p class="note">Requires Claude Code and <code>python3</code>. The engine is stdlib only —
-    there is nothing to <code>pip install</code>. <code>./install.sh --project</code> installs
-    into one repo instead of your user account.</p>
+
+    <p class="caption">Requires Claude Code and <code>python3</code>.
+    <code>./install.sh --project</code> installs into one repo instead of your user account.
+    Everything the tool learns stays in <code>~/.alkeyword</code> on your machine — there is
+    no server, no account, and nothing leaves the box.</p>
+  </div>
+</section>
+
+<!-- ============================== FINALE ============================== -->
+<section class="finale">
+  <div class="wrap">
+    <h2>The research is the product.<br>The writing is yours.</h2>
+    <p>Bring a domain name. Get back what your own site already proves, matched to what people
+    are actually asking — and an honest refusal where the material isn't there.</p>
+    <div class="cta">
+      <a class="btn big" href="#download">Download v0.5.0</a>
+      <a class="ghost big" href="#explore">Explore the real runs</a>
+    </div>
   </div>
 </section>
 
 <footer>
-  <div class="wrap">
-    <p><strong>al&#8202;·&#8202;keyword</strong> — from <em>al-</em>, as in alchemy, algebra,
-    algorithm. The prefix is the method: take what is already there and turn it into
-    something worth more.</p>
-    <p>v0.5.0 · early and honest about it</p>
+  <div class="wrap fwrap">
+    <div class="fbrand">
+      <span class="brand"><span class="gl">🜛</span><span class="nm">alkeyword</span></span>
+      <p>From <em>al-</em>, as in alchemy, algebra, algorithm. The prefix is the method: take
+      what is already there and turn it into something worth more.</p>
+    </div>
+    <div class="flinks">
+      <a href="#explore">Explore</a>
+      <a href="#refusal">The rule</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#status">Status</a>
+      <a href="#download">Download</a>
+    </div>
+  </div>
+  <div class="wrap fbot">
+    <span>v0.5.0 · early, and specific about which parts are.</span>
+    <span>Every figure on this page regenerates from the download.</span>
   </div>
 </footer>
 
+<script type="module" src="site.js"></script>
 </body>
 </html>
